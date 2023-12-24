@@ -1,8 +1,7 @@
 [
-    {
-        "username":"bob123",
-        "email":"bob@gmail.com",
-        "password":"password1234"
-    }
+  {
+    "username": "bob123",
+    "email": "bob@gmail.com",
+    "password": "password1234"
+  }
 ]
-
