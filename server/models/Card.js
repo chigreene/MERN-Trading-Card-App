@@ -17,6 +17,7 @@ const cardSchema = new Schema({
   description: {
     type: String,
   },
+  
 });
 
 const Card = model("Card", cardSchema);

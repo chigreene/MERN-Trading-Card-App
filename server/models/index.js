@@ -1,4 +1,4 @@
 const User=require('./User')
 const Card=require('./Card')
-
-module.exports={User,Card}
+const Trade=require('./Trade')
+module.exports={User,Card,Trade}

@@ -1,3 +1,4 @@
+
 const typeDefs = `
   type User {
     _id: ID
@@ -15,22 +16,36 @@ const typeDefs = `
     description: String
   }
 
+  type Trade {
+    trader: User
+    recipient: User
+    offeredCard: Card
+    requestedCard: Card
+    status: String
+  }
+
   type Query {
     users: [User]
     user(username: String!): User
     cards: [Card]
     card(card_id: ID!): Card
+    trades: [Trade] # Assuming trades is a list of Trade objects
   }
 
-  type Mutation{
-    addCardToUser(username:String!,card_id:ID!):User
-    removeCardFromUser(username:String!,card_id:ID!):User
-    addUser(username:String!,email:String!,password:String!):User
-    removeUser(username:String!):User 
-    addCard(card_id:ID!,name:String!,rarity:String!,description:String!):Card
-    removeCard(card_id:ID!):Card 
+  type Mutation {
+    addCardToUser(username: String!, card_id: ID!): User
+    removeCardFromUser(username: String!, card_id: ID!): User
+    addUser(username: String!, email: String!, password: String!): User
+    removeUser(username: String!): User
+    addCard(card_id: ID!, name: String!, rarity: String!, description: String!): Card
+    removeCard(card_id: ID!): Card
+    createTrade(
+      trader: ID!
+      recipient: ID!
+      offeredCard: ID!
+      requestedCard: ID!
+    ): Trade
   }
 `;
 
-
-module.exports=typeDefs
+module.exports = typeDefs;

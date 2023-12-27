@@ -1,4 +1,4 @@
-const {User,Card}=require('../models/index')
+const {User,Card,Trade}=require('../models/index')
 
 const resolvers={
     
@@ -15,6 +15,10 @@ const resolvers={
         card:async(parent,{card_id})=>{
             return await Card.findOne({card_id:card_id})
         },
+        trades:async()=>{
+            return await Trade.find({})
+        },
+
     },
     Mutation:{
         addCardToUser:async(parent,{username,card_id})=>{
@@ -49,6 +53,9 @@ const resolvers={
         removeCard:async(parent,{card_id})=>{
             return await Card.findOneAndDelete({card_id
             })
+        },
+        createTrade:async(parent,{trader,recipient,offeredCard,requestedCard,status})=>{
+            return await Trade.create({trader,recipient,offeredCard,requestedCard,status})
         }
         
     }
