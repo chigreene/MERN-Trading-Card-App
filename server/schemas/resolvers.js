@@ -12,30 +12,44 @@ const resolvers={
         cards:async()=>{
             return await Card.find({})
         },
-        card:async(parent,{cardID})=>{
-            return await Card.findOne({card_id:cardID})
+        card:async(parent,{card_id})=>{
+            return await Card.findOne({card_id:card_id})
         },
     },
     Mutation:{
-        addCardToUser:async(parent,{userID,cardID})=>{
-           return await User.findByIdAndUpdate(
-            {_id:userID},
-            {$addToSet:{savedCards:cardID}},
+        addCardToUser:async(parent,{username,card_id})=>{
+            const newCard= await Card.findOne({card_id:card_id})
+           return await User.findOneAndUpdate(
+            {username},
+            {$addToSet:{savedCards:newCard._id}},
             {new:true})
             .populate('savedCards')
         },
-        removeCardFromUser:async(parent,{userID,cardID})=>{
-            return await User.findByIdAndDelete(
-                {_id:userID},
-                {$pull:{savedCards:cardID}})
+        removeCardFromUser:async(parent,{username,card_id})=>{
+            const savedCard= await Card.findOne({card_id:card_id})
+            return await User.findOneAndUpdate(
+                {username},
+                {$pull:{savedCards:savedCard._id}})
                 .populate('savedCards')
         },
          addUser:async (parent,{username,email,password})=>{
             return await User.create({username,email,password})
         },
-         removeUser:async(parent,{userID})=>{
-            return await User.findByIdAndDelete({_id:userID})
+         removeUser:async(parent,{username})=>{
+            return await User.findOneAndDelete({username})
         },
+        addCard:async(parent,{card_id,name,rarity,description})=>{
+            return await Card.create({
+                card_id,
+                name,
+                rarity,
+                description
+            })
+        },
+        removeCard:async(parent,{card_id})=>{
+            return await Card.findOneAndDelete({card_id
+            })
+        }
         
     }
 }

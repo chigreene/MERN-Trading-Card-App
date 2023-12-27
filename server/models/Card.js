@@ -2,7 +2,8 @@ const { Schema, model } = require("mongoose");
 
 const cardSchema = new Schema({
   card_id: {
-    type: Number,
+    type:Number,
+    unique:true,
     require: true,
   },
   name: {
