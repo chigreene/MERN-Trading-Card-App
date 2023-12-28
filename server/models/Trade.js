@@ -23,7 +23,7 @@ const tradeSchema = new Schema({
   }],
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected"], // only allow these fields to be added 
+    enum: ["pending", "accepted", "rejected"], // only allow these values to be added 
     default: "pending" // default value 
   },
 
@@ -31,4 +31,5 @@ const tradeSchema = new Schema({
 const Trade=model('Trade',tradeSchema)
 module.exports=Trade
 
-//create a method that if the status is reject delete the trade 
+// create a method that checks if the requestedf and offerend card belongs to the right user
+// should add a created a field so that if after a certain time and the trade is still pending it is delete it automatically

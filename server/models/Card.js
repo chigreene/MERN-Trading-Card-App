@@ -13,6 +13,7 @@ const cardSchema = new Schema({
   rarity: {
     type: String,
     require: true,
+    // card so have enum and default value of common 
   },
   description: {
     type: String,

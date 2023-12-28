@@ -22,10 +22,9 @@ const resolvers={
       .populate('offeredCard')
       .populate('requestedCard');
   },
-
     },
     Mutation:{
-        addCardToUser:async(parent,{username,card_id})=>{
+        addCardToUser:async(parent,{username,card_id})=>{ // currently can only add one car should be able to ad multiple at the same time for example when the user pulls cards from the shop
             const newCard= await Card.findOne({card_id:card_id})
            return await User.findOneAndUpdate(
             {username},
@@ -70,10 +69,60 @@ const resolvers={
             offeredCard:OfferedCard._id,
             requestedCard:RequestedCard._id
              })
-        }
         // when creating a trade this fields will be blank except for status thats becasue you can only use 
         //.populate on queries from what i read https://mongoosejs.com/docs/populate.html
         // but if you query for the trade the info will pop up
+        },
+changeTradeStatus: async (parent, { _id, status }) => {
+   // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
+   //you cant $pull and $addToSet at the time must be seperate will cause a error 
+  const currentTrade = await Trade.findByIdAndUpdate(
+    _id,
+    { status },
+    { new: true }
+  );
+
+  if (currentTrade.status === 'accepted') {
+    //recipient updates
+   await User.findByIdAndUpdate(
+      currentTrade.recipient,
+      {
+        $addToSet: { savedCards: { $each: currentTrade.offeredCard } },
+      }
+    )
+
+       await User.findByIdAndUpdate(
+      currentTrade.recipient,
+      {
+        $pull: { savedCards: { $in: currentTrade.requestedCard } }
+      }
+    )
+      //trader upadtes
+
+    await User.findByIdAndUpdate(
+      currentTrade.trader,
+      {
+        $addToSet: { savedCards: { $each: currentTrade.requestedCard } },
+      }
+    )
+
+    await User.findByIdAndUpdate(
+      currentTrade.trader,
+      {
+         $pull: { savedCards: { $in: currentTrade.offeredCard } }
+      }
+    )
+
+
+
+    return currentTrade;
+  }
+  else if(currentTrade.status==='rejected'){
+      await Trade.findByIdAndDelete(_id);
+  }
+}
+
+
     }
 }
 
