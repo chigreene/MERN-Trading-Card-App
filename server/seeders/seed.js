@@ -8,6 +8,7 @@ db.once("open", async () => {
   try {
     await cleanDb("Card", "cards");
     await cleanDb("User", "users");
+    await cleanDb('Trade','trades')
 
     const users = await User.create(userSeeds);
     const cards = await Card.create(cardSeeds);

@@ -55,7 +55,17 @@ const resolvers={
             })
         },
         createTrade:async(parent,{trader,recipient,offeredCard,requestedCard,status})=>{
-            return await Trade.create({trader,recipient,offeredCard,requestedCard,status})
+            const Trader=await User.findOne({username:trader})
+            const Recipient= await User.findOne({username:recipient})
+            const OfferedCard=await Card.findOne({card_id:offeredCard})
+            const RequestedCard=await Card.findOne({card_id:requestedCard})
+        
+            return await Trade.create({ 
+            trader:Trader._id,
+            recipient:Recipient._id,
+            offeredCard:OfferedCard._id,
+            requestedCard:RequestedCard._id
+             })
         }
         
     }
