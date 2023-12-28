@@ -15,9 +15,13 @@ const resolvers={
         card:async(parent,{card_id})=>{
             return await Card.findOne({card_id:card_id})
         },
-        trades:async()=>{
-            return await Trade.find({})
-        },
+        trades: async () => {
+    return await Trade.find({})
+      .populate('trader')
+      .populate('recipient')
+      .populate('offeredCard')
+      .populate('requestedCard');
+  },
 
     },
     Mutation:{
@@ -54,7 +58,7 @@ const resolvers={
             return await Card.findOneAndDelete({card_id
             })
         },
-        createTrade:async(parent,{trader,recipient,offeredCard,requestedCard,status})=>{
+        createTrade:async(parent,{trader,recipient,offeredCard,requestedCard})=>{
             const Trader=await User.findOne({username:trader})
             const Recipient= await User.findOne({username:recipient})
             const OfferedCard=await Card.findOne({card_id:offeredCard})
@@ -67,7 +71,9 @@ const resolvers={
             requestedCard:RequestedCard._id
              })
         }
-        
+        // when creating a trade this fields will be blank except for status thats becasue you can only use 
+        //.populate on queries from what i read https://mongoosejs.com/docs/populate.html
+        // but if you query for the trade the info will pop up
     }
 }
 

@@ -29,7 +29,7 @@ const typeDefs = `
     user(username: String!): User
     cards: [Card]
     card(card_id: ID!): Card
-    trades: [Trade] # Assuming trades is a list of Trade objects
+    trades: [Trade]
   }
 
   type Mutation {

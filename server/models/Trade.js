@@ -11,20 +11,20 @@ const tradeSchema = new Schema({
     ref: "User",
     required: true
   },
-  offeredCard: {
+  offeredCard:[ {
     type: Schema.Types.ObjectId,
     ref: "Card",
     required: true  
-  },
-  requestedCard: {
+  }],
+  requestedCard: [{
     type: Schema.Types.ObjectId,
     ref: "Card",
     required: true 
-  },
+  }],
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected"], 
-    default: "pending" 
+    enum: ["pending", "accepted", "rejected"], // only allow these fields to be added 
+    default: "pending" // default value 
   },
 
 });
