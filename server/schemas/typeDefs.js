@@ -20,6 +20,7 @@ const typeDefs = `
     user(username: String!): User
     cards: [Card]
     card(card_id: ID!): Card
+    cardPack: [Card]
   }
 
   type Mutation{
@@ -32,5 +33,4 @@ const typeDefs = `
   }
 `;
 
-
-module.exports=typeDefs
+module.exports = typeDefs;
