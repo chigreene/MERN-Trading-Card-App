@@ -33,7 +33,7 @@ const typeDefs = `
     addUser(username:String!,email:String!,password:String!):Auth
     login(email: String!, password: String!): Auth
     removeUser(username:String!):User 
-    addCardToUser(username:String!,card_id:ID!):User
+    addCardsToUser(username: String!, card_ids: [ID]!): User
     removeCardFromUser(username:String!,card_id:ID!):User
     addCard(card_id:ID!,name:String!,rarity:String!,description:String!):Card
     removeCard(card_id:ID!):Card 
