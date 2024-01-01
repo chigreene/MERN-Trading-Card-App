@@ -1,3 +1,7 @@
+import { Navigate, useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+
+
 function ProfilePage(){
     return(
         // remember to do the bootstrap
