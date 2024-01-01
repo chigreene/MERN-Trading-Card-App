@@ -28,15 +28,19 @@ function ProfilePage() {
     );
   }
 
-
- 
+  // Logout User
+   const logout = (event) => {
+    event.preventDefault();
+    Auth.logout();
+  };
   return (
     <>
       <section id="profile">
         <h1>
           Hello {user.username}
         </h1>
-
+        
+        <button onClick={logout}>Logout</button>
       </section>
     </>
   );
