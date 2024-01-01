@@ -1,28 +1,34 @@
-const express = require("express");
-const { ApolloServer } = require("@apollo/server");
+const express = require("express"); // To run the server
+const { ApolloServer } = require("@apollo/server"); // To interacted with apollo server
 const { expressMiddleware } = require("@apollo/server/express4");
-const { authMiddleWare } = require("./utils/auth");
-
-const { typeDefs, resolvers } = require("./schemas");
 const path = require("path");
-const db = require("./config/connection");
+// for authentication
+const { authMiddleWare } = require("./utils/auth");
+const { typeDefs, resolvers } = require("./schemas");
+// TypeDefs - Describing the data structure
+// Resolver- making these structures actually work from your database
+const db = require("./config/connection"); // required the established connection and store within a varibale
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; // the port your server will run on or whatever port when you deploy it
+const app = express(); // creates an instance of your express app basically just calling the function
 const server = new ApolloServer({
+  //passing in your typedefs and resolvers so it shows up in apollo server
   typeDefs,
   resolvers,
 });
 
+// Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
-  await server.start();
-  app.use(express.urlencoded({ extended: true }));
+  await server.start(); // waits for server to start
+
+  app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+  // ????
 
   app.use(
-    "graphql",
+    "/graphql",
     expressMiddleware(server, {
-      context: authMiddleWare,
+      context: authMiddleWare, // for auth
     })
   );
 
@@ -33,7 +39,8 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
-
+  //???
+  //Once your databse is open the server will start then starting the apollo server seen in line one
   db.once("open", () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
@@ -42,4 +49,5 @@ const startApolloServer = async () => {
   });
 };
 
+// Call the async function to start the server
 startApolloServer();
