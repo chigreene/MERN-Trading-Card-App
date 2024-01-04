@@ -8,8 +8,11 @@ function SavedCards({ savedCards }) {
       <div>
         {savedCards.map((card) => (
           <div key={card._id}>
-            <span>{card.card_id}</span>
-            <h1>{card.name}</h1>
+            <span>
+              <p>{card.card_id}</p>
+              <h1>{card.name}</h1>
+            </span>
+
             <h2>{card.rarity}</h2>
             <h2>{card.description}</h2>
           </div>
