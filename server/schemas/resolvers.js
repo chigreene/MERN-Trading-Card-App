@@ -51,15 +51,15 @@ const resolvers = {
 
       return { token, user };
     },
-addCardsToUser: async (parent, { username, card_ids }) => {
-  const newCards = await Card.find({ card_id: { $in: card_ids } });
-  const newCardIds = newCards.map((card) => card._id);
-  return await User.findOneAndUpdate(
-    { username },
-    { $addToSet: { savedCards: { $each: newCardIds } } },
-    { new: true }
-  ).populate("savedCards");
-},
+    addCardsToUser: async (parent, { username, card_ids }) => {
+      const newCards = await Card.find({ card_id: { $in: card_ids } });
+      const newCardIds = newCards.map((card) => card._id);
+      return await User.findOneAndUpdate(
+        { username },
+        { $addToSet: { savedCards: { $each: newCardIds } } },
+        { new: true }
+      ).populate("savedCards");
+    },
 
     removeCardFromUser: async (parent, { username, card_id }) => {
       const savedCard = await Card.findOne({ card_id: card_id });
