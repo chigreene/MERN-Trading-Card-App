@@ -30,7 +30,7 @@ function SignupPage(){
         variables: { ...formState },
       });
 
-      Auth.login(data.signup.token);
+      Auth.login(data.addUser.token);
     } catch (e) {
       console.error(e);
     }
