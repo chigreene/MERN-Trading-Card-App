@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_PACK, Query_ME } from "../../utils/queries";
 import { ADD_CARD } from "../../utils/mutations";
+import './home.css'
 
 const Home = () => {
   const [cards, setCards] = useState([]);
@@ -69,7 +70,7 @@ const onClick = async () => {
     <div>
       <h1>Hello Group</h1>
       {cards.length === 0 ? (
-        <button onClick={openPack}>Open Pack</button>
+        <button type="button" className="btn btn-light" onClick={openPack}>Open Pack</button>
       ) : (
         cards.map((card,index) => (
           <div key={card._id} className="card">
@@ -83,7 +84,7 @@ const onClick = async () => {
         ))
       )}
     </div>
-    <button onClick={onClick}>Submit</button>
+<button  onClick={onClick} type="button" className="btn btn-light">Submit</button>
     </>
   );
 };

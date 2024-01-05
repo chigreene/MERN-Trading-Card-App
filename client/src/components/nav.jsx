@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom"
+import './nav.css'
+
 function Nav(){
     return(
         <>

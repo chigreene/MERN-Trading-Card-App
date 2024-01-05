@@ -1,0 +1,12 @@
+:root{
+--primary:#F95738
+}
+
+body{
+background-color:#083D77;
+}
+h1{
+    color:var(--primary);
+    text-align:center;
+    font-family:'Bungee';
+}

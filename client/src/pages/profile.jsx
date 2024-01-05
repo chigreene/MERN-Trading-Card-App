@@ -2,7 +2,6 @@ import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Query_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
-
 import SavedCards from "../components/savedCards";
 function ProfilePage() {
   const { username: userParam } = useParams();
