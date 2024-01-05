@@ -7,7 +7,6 @@ import { ADD_CARD } from "../../utils/mutations";
 const Home = () => {
   const [cards, setCards] = useState([]);
   const cardsToSave=[...cards]
-  console.log(cardsToSave)
   const [select,setSelect]=useState(cardsToSave.map(()=>false))
 
   const { loading: loadingPack, data: dataPack } = useQuery(QUERY_PACK, {
@@ -48,12 +47,25 @@ const Home = () => {
     updatedSelect[index] = !updatedSelect[index]; 
     setSelect(updatedSelect);
   };
+const onClick = async () => {
+  const selectedItems = cardsToSave.filter((item, index) => select[index]);
+  const selectedCardIds = selectedItems.map((item) => item.card_id);
 
-  const onClick=()=>{
-    const selectedItems=cardsToSave.filter((item, index) => select[index]);
-     console.log("Selected items:", selectedItems);
+  // Ensure username is a string, not an array
+
+
+
+  try {
+    const { data } = await addCardToUser({
+      variables: { username: username, cardIds: selectedCardIds },
+    });
+    console.log("Cards saved successfully:", data);
+  } catch (error) {
+    console.error("Error saving cards:", error);
   }
+};
   return (
+    <>
     <div>
       <h1>Hello Group</h1>
       {cards.length === 0 ? (
@@ -66,11 +78,13 @@ const Home = () => {
           <input 
           type='checkbox'
           onChange={()=>onCheckboxChange(index)}
-          checked={select[index]}></input>
+          checked={select[index]||false}></input>
           </div>
         ))
       )}
     </div>
+    <button onClick={onClick}>Submit</button>
+    </>
   );
 };
 
