@@ -6,6 +6,9 @@ import { ADD_CARD } from "../../utils/mutations";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
+  const cardsToSave=[...cards]
+  const [select,setSelect]=useState(cardsToSave.map(()=>false))
+
   const { loading: loadingPack, data: dataPack } = useQuery(QUERY_PACK, {
     fetchPolicy: "no-cache",
   });
@@ -14,8 +17,6 @@ const Home = () => {
   });
 
   const username = dataMe?.me.username || [];
-
-  console.log("dataMe", username);
 
   const [addCardToUser, { error }] = useMutation(ADD_CARD);
 
@@ -40,25 +41,84 @@ const Home = () => {
       console.error("Error saving card:", error);
     }
   };
+  
+  const onCheckboxChange = (index) => {
+    const updatedSelect = [...select];
+    updatedSelect[index] = !updatedSelect[index]; 
+    setSelect(updatedSelect);
+  };
+const onClick = async () => {
+  const selectedItems = cardsToSave.filter((item, index) => select[index]);
+  const selectedCardIds = selectedItems.map((item) => item.card_id);
 
+  // Ensure username is a string, not an array
+
+
+
+  try {
+    const { data } = await addCardToUser({
+      variables: { username: username, cardIds: selectedCardIds },
+    });
+    console.log("Cards saved successfully:", data);
+  } catch (error) {
+    console.error("Error saving cards:", error);
+  }
+};
   return (
+    <>
     <div>
       <h1>Hello Group</h1>
       {cards.length === 0 ? (
         <button onClick={openPack}>Open Pack</button>
       ) : (
-        cards.map((card) => (
+        cards.map((card,index) => (
           <div key={card._id} className="card">
             <h2>{card.name}</h2>
             {/* Render other card details here */}
-            <button onClick={() => saveCard(username, card.card_id)}>
-              Save Card
-            </button>
+          <input 
+          type='checkbox'
+          onChange={()=>onCheckboxChange(index)}
+          checked={select[index]||false}></input>
           </div>
         ))
       )}
     </div>
+    <button onClick={onClick}>Submit</button>
+    </>
   );
 };
+
+// const Home = () => {
+//   const testArray = ['bob', 'penny', 'brew'];
+//   const [select, setSelect] = useState(testArray.map(() => false));
+
+//   const onCheckboxChange = (index) => {
+//     const updatedSelect = [...select];
+//     updatedSelect[index] = !updatedSelect[index]; 
+//     setSelect(updatedSelect);
+//   };
+
+//   const onClick = () => {
+//     const selectedItems = testArray.filter((item, index) => select[index]);
+//     console.log("Selected items:", selectedItems);\
+//   };
+
+//   return (
+//     <div>
+//       {testArray.map((person, index) => (
+//         <div key={index}>
+//           {person}
+//           <input
+//             type='checkbox'
+//             onChange={() => onCheckboxChange(index)}
+//             checked={select[index]}
+//           />
+//           <p>State of select: {select[index].toString()}</p>
+//         </div>
+//       ))}
+//       <button onClick={onClick}>Submit</button>
+//     </div>
+//   );
+// };
 
 export default Home;
