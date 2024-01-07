@@ -38,6 +38,16 @@ function LoginPage(){
     });
   };
 
+// Locking off the loging and signup page if the user is already logged or signed in 
+
+const profile = Auth.getProfile();
+const username=profile.data.username
+
+if(profile){
+  return(
+    <h1>Already SIGNED IN</h1>
+  )
+}
   return (
 <form onSubmit={handleFormSubmit}>
   {data ? (

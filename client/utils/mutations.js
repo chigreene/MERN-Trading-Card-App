@@ -55,3 +55,18 @@ export const ADD_CARD = gql`
     }
   }
 `;
+
+
+export const DELETE_CARD=gql`
+mutation RemoveCardFromUser($username: String!, $cardId: ID!) {
+  removeCardFromUser(username: $username, card_id: $cardId) {
+    username
+    savedCards {
+      _id
+      card_id
+      name
+      rarity
+      description
+    }
+  }
+}`
