@@ -1,0 +1,44 @@
+.card{
+    margin:5rem;
+}
+.card:hover .card-img-top{
+    transition:.5s;
+    filter:brightness(50%)
+}
+
+
+.card-container{
+display:flex;
+}
+
+.options{
+    visibility: hidden;
+    z-index:1;
+    position:relative;
+    left:3rem;
+    bottom:15rem;
+}
+
+.card:hover .options {
+    visibility:visible;
+}
+.options div{
+    width:fit-content;
+    height:fit-content
+}
+.options img{
+    width:50px;
+    height:50px;
+}
+.options p{
+    font-size:.5rem;
+}
+
+#deleteIcon p{
+color: red;
+visibility: hidden;
+}
+
+#deleteIcon:hover p{
+    visibility:visible;
+}

@@ -35,7 +35,13 @@ function SignupPage(){
       console.error(e);
     }
   };
+// Locking off the loging and signup page if the user is already logged or signed in 
 
+if(Auth.loggedIn()){
+  return(
+    <h1>Already SIGNED IN</h1>
+  )
+}
   return (
     <>
    {data ? (

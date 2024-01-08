@@ -1,16 +1,31 @@
-import { Link } from "react-router-dom"
-import './nav.css'
+import { Link } from "react-router-dom";
+import './nav.css';
+import Auth from "../../utils/auth";
 
-function Nav(){
-    return(
+function Nav() {
+  // Logout User
+  const logout = (event) => {
+    event.preventDefault();
+    Auth.logout();
+  };
+
+  return (
+    <nav>
+      {Auth.loggedIn() ? (
         <>
-        <nav>
-            <Link to='/'>Home</Link>
-            <Link to='/me'>Profile</Link>
-            <Link to='/signup'>Signup</Link>
-            <Link to='/login'>Login</Link>
-        </nav>
+          <Link to='/'>Home</Link>
+          <Link to='/me'>Profile</Link>
+          <a onClick={logout}>Logout</a>
         </>
-    )
+      ) : (
+        <>
+          <Link to='/'>Home</Link>
+          <Link to='/signup'>Signup</Link>
+          <Link to='/login'>Login</Link>
+        </>
+      )}
+    </nav>
+  );
 }
-export default Nav
+
+export default Nav;
