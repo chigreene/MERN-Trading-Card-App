@@ -2,8 +2,10 @@ import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { Query_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
-
 import SavedCards from "../components/savedCards";
+
+import "./profile.css"
+
 function ProfilePage() {
   const { username: userParam } = useParams();
 
@@ -29,18 +31,14 @@ function ProfilePage() {
     );
   }
 
-  // Logout User
-  const logout = (event) => {
-    event.preventDefault();
-    Auth.logout();
-  };
+
   return (
     <>
       <section id="profile">
-        <button onClick={logout}>Logout</button>
         <h1>Hello {user.username}</h1>
         <SavedCards savedCards={user.savedCards}></SavedCards>
       </section>
+    
     </>
   );
 }
