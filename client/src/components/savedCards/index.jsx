@@ -33,7 +33,7 @@ const {data}=await deleteCard({
 
           <div className="card" style={{ width: "20rem" }} key={card._id}>
             {/* the src bellow is what gives every card that picture */}
-            <img className="card-img-top" src="/public/sampleCard.jpg" alt="Card image cap" />
+            <img className="card-img-top" src="/public/resources/card1.png" alt="Card image cap" />
                       <div className="options">
 <div id='deleteIcon' onClick={() => onDeleteClick(card.card_id)}>
 
