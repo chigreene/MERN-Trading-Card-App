@@ -37,10 +37,7 @@ function SignupPage(){
   };
 // Locking off the loging and signup page if the user is already logged or signed in 
 
-const profile = Auth.getProfile();
-const username=profile.data.username
-
-if(profile){
+if(Auth.loggedIn()){
   return(
     <h1>Already SIGNED IN</h1>
   )

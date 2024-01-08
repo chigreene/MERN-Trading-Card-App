@@ -31,15 +31,10 @@ function ProfilePage() {
     );
   }
 
-  // Logout User
-  const logout = (event) => {
-    event.preventDefault();
-    Auth.logout();
-  };
+
   return (
     <>
       <section id="profile">
-        <button onClick={logout}>Logout</button>
         <h1>Hello {user.username}</h1>
         <SavedCards savedCards={user.savedCards}></SavedCards>
       </section>
