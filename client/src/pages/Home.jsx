@@ -6,6 +6,7 @@ import { ADD_CARD } from "../../utils/mutations";
 import "./home.css";
 import Auth from "../../utils/auth";
 import Card1 from "../assets/resources/card1.png";
+import packImg from "../assets/resources/pack.png";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
@@ -49,38 +50,56 @@ const Home = () => {
       console.error("Error saving cards:", error);
     }
   };
+
   return (
     <>
       {Auth.loggedIn() ? (
         <div>
-          <h1>Hello Group</h1>
+          <h1>Hello {username}</h1>
           {cards.length === 0 ? (
-            <button type="button" className="btn btn-light" onClick={openPack}>
-              Open Pack
-            </button>
+            <div className="openPackBtn">
+              <img className="packImg" src={packImg} alt="Pack image" />
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={openPack}
+              >
+                Open Pack
+              </button>
+            </div>
           ) : (
             <>
-              <div className="card-container">
-                {cards.map((card, index) => (
-                  <div key={card._id} className="card">
-                    <img
-                      className="card-img-top"
-                      src={Card1}
-                      alt="Card image cap"
-                    />
-                    <h2>{card.name}</h2>
-                    <h3>{card.rarity}</h3>
-                    <input
-                      type="checkbox"
-                      onChange={() => onCheckboxChange(index)}
-                      checked={select[index] || false}
-                    />
-                  </div>
-                ))}
+              <div className="parent-container">
+                <button
+                  onClick={onClick}
+                  type="button"
+                  className="btn btn-light"
+                >
+                  Confirm
+                </button>
+                <p>
+                  Please select the cards you wish to save then click confirm.
+                </p>
+                <div className="card-container">
+                  {cards.map((card, index) => (
+                    <div key={card._id} className="card">
+                      <img
+                        className="card-img-top"
+                        src={Card1}
+                        alt="Card image cap"
+                      />
+                      <h2>{card.name}</h2>
+                      <h3 className={card.rarity}>{card.rarity}</h3>
+                      {console.log("card rarity", card.rarity)}
+                      <input
+                        type="checkbox"
+                        onChange={() => onCheckboxChange(index)}
+                        checked={select[index] || false}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <button onClick={onClick} type="button" className="btn btn-light">
-                Confirm
-              </button>
             </>
           )}
         </div>

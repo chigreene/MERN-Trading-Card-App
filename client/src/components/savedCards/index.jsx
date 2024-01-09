@@ -45,7 +45,7 @@ function SavedCards({ savedCards }) {
             <h5 className="card-title">
               # {card.card_id} {card.name}{" "}
             </h5>
-            <h6>{card.rarity}</h6>
+            <h6 className={card.rarity}>{card.rarity}</h6>
             <p className="card-text">{card.description}</p>
             <div className="options">
               <div id="deleteIcon" onClick={() => onDeleteClick(card.card_id)}>
