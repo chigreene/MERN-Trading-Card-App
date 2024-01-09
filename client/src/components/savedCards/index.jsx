@@ -3,6 +3,10 @@ import { useMutation } from "@apollo/client";
 import { DELETE_CARD } from '../../../utils/mutations';
 import { Query_ME } from "../../../utils/queries";
 import Auth from "../../../utils/auth";
+
+// Image Imports
+import Card1 from "../../assets/resources/card1.png"
+import tempDelete from "../../assets/tempDeleteIcon.png"
 function SavedCards({ savedCards }) {
   if (!savedCards.length) {
     return <h1>No saved Cards Yet</h1>;
@@ -33,11 +37,11 @@ const {data}=await deleteCard({
 
           <div className="card" style={{ width: "20rem" }} key={card._id}>
             {/* the src bellow is what gives every card that picture */}
-            <img className="card-img-top" src="/public/resources/card1.png" alt="Card image cap" />
+            <img className="card-img-top" src={Card1} alt="Card image cap" />
                       <div className="options">
 <div id='deleteIcon' onClick={() => onDeleteClick(card.card_id)}>
 
-              <img src="/public/tempDeleteIcon.png" alt="Delete" />
+              <img src={tempDelete} alt="Delete" />
               <p>Delete Card</p>
             </div>
 
