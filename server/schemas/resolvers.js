@@ -1,4 +1,4 @@
-const { User, Card } = require("../models/index");
+const { User, Card, Trade } = require("../models/index");
 const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
@@ -27,6 +27,21 @@ const resolvers = {
         return User.findOne({ _id: context.user._id }).populate("savedCards");
       }
       throw AuthenticationError;
+    },
+    trades: async () => {
+      return await Trade.find({})
+        .populate("trader")
+        .populate("recipient")
+        .populate("offeredCard")
+        .populate("requestedCard");
+    },
+    tradeByUser: async (parent, { ID }) => {
+      const username = await Trade.find({ "recipient._id": recipient._id })
+        .populate("trader")
+        .populate("recipient")
+        .populate("offeredCard")
+        .populate("requestedCard");
+      return username;
     },
   },
   Mutation: {
@@ -82,6 +97,60 @@ const resolvers = {
     },
     removeCard: async (parent, { card_id }) => {
       return await Card.findOneAndDelete({ card_id });
+    },
+    createTrade: async (
+      parent,
+      { trader, recipient, offeredCard, requestedCard }
+    ) => {
+      const Trader = await User.findOne({ username: trader });
+      const Recipient = await User.findOne({ username: recipient });
+      const OfferedCard = await Card.findOne({ card_id: offeredCard });
+      const RequestedCard = await Card.findOne({ card_id: requestedCard });
+
+      const newTrade = await Trade.create({
+        trader: Trader._id,
+        recipient: Recipient._id,
+        offeredCard: OfferedCard._id,
+        requestedCard: RequestedCard._id,
+      });
+
+      return newTrade;
+      // when creating a trade this fields will be blank except for status thats becasue you can only use
+      //.populate on queries from what i read https://mongoosejs.com/docs/populate.html
+      // but if you query for the trade the info will pop up
+    },
+    changeTradeStatus: async (parent, { _id, status }) => {
+      // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
+      //you cant $pull and $addToSet at the time must be seperate will cause a error
+      const currentTrade = await Trade.findByIdAndUpdate(
+        _id,
+        { status },
+        { new: true }
+      );
+
+      if (currentTrade.status === "accepted") {
+        //recipient updates
+        await User.findByIdAndUpdate(currentTrade.recipient, {
+          $addToSet: { savedCards: { $each: currentTrade.offeredCard } },
+        });
+
+        await User.findByIdAndUpdate(currentTrade.recipient, {
+          $pull: { savedCards: { $in: currentTrade.requestedCard } },
+        });
+        //trader upadtes
+
+        await User.findByIdAndUpdate(currentTrade.trader, {
+          $addToSet: { savedCards: { $each: currentTrade.requestedCard } },
+        });
+
+        await User.findByIdAndUpdate(currentTrade.trader, {
+          $pull: { savedCards: { $in: currentTrade.offeredCard } },
+        });
+
+        return currentTrade;
+      } else if (currentTrade.status === "rejected") {
+        await Trade.findByIdAndDelete(_id);
+      }
     },
   },
 };

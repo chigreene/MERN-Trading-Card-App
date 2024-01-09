@@ -28,3 +28,5 @@ export const QUERY_PACK = gql`
     }
   }
 `;
+
+export const QUERY_TRADES = gql``;

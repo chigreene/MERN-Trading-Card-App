@@ -56,17 +56,121 @@ export const ADD_CARD = gql`
   }
 `;
 
-
-export const DELETE_CARD=gql`
-mutation RemoveCardFromUser($username: String!, $cardId: ID!) {
-  removeCardFromUser(username: $username, card_id: $cardId) {
-    username
-    savedCards {
-      _id
-      card_id
-      name
-      rarity
-      description
+export const DELETE_CARD = gql`
+  mutation RemoveCardFromUser($username: String!, $cardId: ID!) {
+    removeCardFromUser(username: $username, card_id: $cardId) {
+      username
+      savedCards {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
     }
   }
-}`
+`;
+
+export const CREATE_TRADE = gql`
+  mutation Mutation(
+    $trader: String!
+    $recipient: String!
+    $offeredCard: String!
+    $requestedCard: String!
+  ) {
+    createTrade(
+      trader: $trader
+      recipient: $recipient
+      offeredCard: $offeredCard
+      requestedCard: $requestedCard
+    ) {
+      _id
+      trader {
+        _id
+        username
+        email
+        savedCards {
+          _id
+          card_id
+          name
+          rarity
+          description
+        }
+      }
+      recipient {
+        _id
+        username
+        email
+        savedCards {
+          _id
+          card_id
+          name
+          rarity
+          description
+        }
+      }
+      offeredCard {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
+      requestedCard {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
+      status
+    }
+  }
+`;
+
+export const ACCEPT_TRADE = gql`
+  mutation Mutation($id: ID!, $status: String!) {
+    changeTradeStatus(_id: $id, status: $status) {
+      _id
+      trader {
+        _id
+        username
+        email
+        savedCards {
+          _id
+          card_id
+          name
+          rarity
+          description
+        }
+      }
+      recipient {
+        _id
+        email
+        savedCards {
+          _id
+          card_id
+          name
+          rarity
+          description
+        }
+        username
+      }
+      offeredCard {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
+      requestedCard {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
+      status
+    }
+  }
+`;
