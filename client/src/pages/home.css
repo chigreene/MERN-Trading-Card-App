@@ -1,12 +1,45 @@
-:root{
---primary:#F95738
+:root {
+  --primary: #f95738;
 }
 
-body{
-background-color:#083D77;
+body {
+  background-color: #083d77;
 }
-h1{
-    color:var(--primary);
-    text-align:center;
-    font-family:'Bungee';
+h1 {
+  color: var(--primary);
+  text-align: center;
+  font-family: "Bungee";
+}
+
+.card {
+  margin: 3rem;
+  min-width: 15rem;
+  max-width: 15rem;
+}
+.card:hover .card-img-top {
+  transition: 0.5s;
+  filter: brightness(50%);
+}
+
+.card h2 {
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.2rem;
+}
+
+.card h3 {
+  font-size: 0.75rem;
+  text-align: center;
+  color: green;
+  margin: 0.2rem;
+}
+.card-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin: 0.2rem;
 }

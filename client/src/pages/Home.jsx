@@ -3,8 +3,9 @@ import { useState, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_PACK, Query_ME } from "../../utils/queries";
 import { ADD_CARD } from "../../utils/mutations";
-import './home.css'
+import "./home.css";
 import Auth from "../../utils/auth";
+import Card1 from "../assets/resources/card1.png";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
@@ -18,7 +19,7 @@ const Home = () => {
     fetchPolicy: "no-cache",
   });
 
-  const username = dataMe?.me.username || '';
+  const username = dataMe?.me.username || "";
 
   const [addCardToUser, { error }] = useMutation(ADD_CARD);
 
@@ -43,44 +44,51 @@ const Home = () => {
         variables: { username: username, cardIds: selectedCardIds },
       });
       console.log("Cards saved successfully:", data);
-      window.location.assign('/');
+      window.location.assign("/");
     } catch (error) {
       console.error("Error saving cards:", error);
     }
   };
-return (
-  <>
-    {Auth.loggedIn() ? (
-      <div>
-        <h1>Hello Group</h1>
-        {cards.length === 0 ? (
-          <button type="button" className="btn btn-light" onClick={openPack}>
-            Open Pack
-          </button>
-        ) : (
-          <>
-            {cards.map((card, index) => (
-              <div key={card._id} className="card">
-                <h2>{card.name}</h2>
-                <input
-                  type='checkbox'
-                  onChange={() => onCheckboxChange(index)}
-                  checked={select[index] || false}
-                />
-              </div>
-            ))}
-            <button onClick={onClick} type="button" className="btn btn-light">
-              Confirm
+  return (
+    <>
+      {Auth.loggedIn() ? (
+        <div>
+          <h1>Hello Group</h1>
+          {cards.length === 0 ? (
+            <button type="button" className="btn btn-light" onClick={openPack}>
+              Open Pack
             </button>
-          </>
-        )}
-      </div>
-    ) : (
-      <h1>Must be logged in</h1>
-    )}
-  </>
-);
-
+          ) : (
+            <>
+              <div className="card-container">
+                {cards.map((card, index) => (
+                  <div key={card._id} className="card">
+                    <img
+                      className="card-img-top"
+                      src={Card1}
+                      alt="Card image cap"
+                    />
+                    <h2>{card.name}</h2>
+                    <h3>{card.rarity}</h3>
+                    <input
+                      type="checkbox"
+                      onChange={() => onCheckboxChange(index)}
+                      checked={select[index] || false}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button onClick={onClick} type="button" className="btn btn-light">
+                Confirm
+              </button>
+            </>
+          )}
+        </div>
+      ) : (
+        <h1>Must be logged in</h1>
+      )}
+    </>
+  );
 };
 
 export default Home;
