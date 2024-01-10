@@ -26,21 +26,19 @@ const Trades = () => {
     return <h1>No active trades</h1>;
   }
 
-  const onClick = async (tradeId, update) => {
-    try {
-      await changeTradeStatus({
-        variables: { id: tradeId, status: update },
-        refetchQueries :[
-        {
-           query: QUERY_USER,
-            variables: { username: username },
-        },
-      ]
-      });
-    } catch (error) {
-      console.error("Error updating trade status:", error);
-    }
-  };
+const onClick = async (tradeId, update) => {
+  try {
+    await changeTradeStatus({
+      variables: { id: tradeId, status: update },
+    });
+    
+    // Refresh the page after the mutation is executed
+    window.location.reload();
+  } catch (error) {
+    console.error("Error updating trade status:", error);
+  }
+};
+
 
   return (
     <div>
