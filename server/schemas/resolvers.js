@@ -55,16 +55,6 @@ const resolvers = {
         .populate("offeredCard")
         .populate("requestedCard");
     },
-    userTrade:async(parent,{username})=>{
-      const user=await User.findOne({username})
-      const userTradeId=user.trades._id
-      return await Trade.find({userTradeId})
-      .populate("trader")
-        .populate("recipient")
-        .populate("offeredCard")
-        .populate("requestedCard")
-    
-  }
 },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {

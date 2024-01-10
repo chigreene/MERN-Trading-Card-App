@@ -38,7 +38,6 @@ const typeDefs = `
     cardPack: [Card]
     me: User
     trades: [Trade]
-    userTrade(username:String!):[Trade]
   }
 
   type Mutation{
