@@ -15,6 +15,7 @@ function Nav() {
         <>
           <Link to='/'>Home</Link>
           <Link to='/me'>Profile</Link>
+          <Link to='/trade'>Trade</Link>
           <a onClick={logout}>Logout</a>
         </>
       ) : (
