@@ -174,3 +174,50 @@ export const ACCEPT_TRADE = gql`
     }
   }
 `;
+
+export const CHANGE_TRADE_STATUS=gql`
+mutation Mutation($id: ID!, $status: String!) {
+  changeTradeStatus(_id: $id, status: $status) {
+    _id
+    trader {
+      _id
+      username
+      email
+      password
+      savedCards {
+        _id
+        card_id
+        name
+        rarity
+        description
+      }
+      trades {
+        _id
+        status
+      }
+    }
+    recipient {
+      _id
+      username
+      email
+      password
+    }
+    offeredCard {
+      _id
+      card_id
+      name
+      rarity
+      description
+    }
+    requestedCard {
+      _id
+      card_id
+      name
+      rarity
+      description
+    }
+    status
+  }
+}
+`
+
