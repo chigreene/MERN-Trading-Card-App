@@ -174,15 +174,7 @@ createTrade: async (
           $pull: { savedCards: { $in: currentTrade.offeredCard } },
         });
 
-        //Populate
-         const populatedTrade = await Trade.findById(currentTrade._id)
-        .populate('trader')
-        .populate('recipient')
-        .populate('offeredCard')
-        .populate('requestedCard')
-        .exec();
-
-      return populatedTrade;
+        await Trade.findByIdAndDelete(_id);
       } else if (currentTrade.status === "rejected") {
         await Trade.findByIdAndDelete(_id);
       }
