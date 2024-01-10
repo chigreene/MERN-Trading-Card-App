@@ -4,11 +4,31 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
-      return await User.find({}).populate("savedCards");
+ const users = await User.find({})
+//  https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
+          .populate('savedCards')
+          .populate({
+            path: 'trades',
+            populate: {
+              path: 'offeredCard requestedCard',
+ populate: {
+              path: 'offeredCard requestedCard trader recipient',
+            }
+            }
+          });
+  return users
     },
     user: async (parent, { username }) => {
-      return await User.findOne({ username }).populate("savedCards");
-    },
+      const user = await User.findOne({})
+          .populate('savedCards')
+          .populate({
+            path: 'trades',
+            populate: {
+              path: 'offeredCard requestedCard trader recipient',
+            }
+          });
+  return user
+        },
     cards: async () => {
       return await Card.find({});
     },
