@@ -1,8 +1,8 @@
 import React from 'react';
-
+import SavedCards from '../savedCards';
 const Trades = ({ trades }) => {
       if (trades.length === 0) {
-    return <h2>No active trades</h2>;
+    return <h1>No active trades</h1>;
   }
   return (
     <div>
@@ -18,10 +18,12 @@ const Trades = ({ trades }) => {
           </p>
           <div>
             <strong>Offered Cards:</strong>
+            <SavedCards savedCards={trade.offeredCard}></SavedCards>
 {/* use saved card componetsnt to render cards */}
           </div>
           <div>
             <strong>Requested Cards:</strong>
+             <SavedCards savedCards={trade.requestedCard }></SavedCards>
 {/* comment above  */}
           </div>
         </div>
