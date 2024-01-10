@@ -4,10 +4,10 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
-      return await User.find({}).populate("savedCards").populate('trades');
+      return await User.find({}).populate("savedCards");
     },
     user: async (parent, { username }) => {
-      return await User.findOne({ username }).populate("savedCards").populate('trades');
+      return await User.findOne({ username }).populate("savedCards");
     },
     cards: async () => {
       return await Card.find({});
@@ -35,7 +35,17 @@ const resolvers = {
         .populate("offeredCard")
         .populate("requestedCard");
     },
-  },
+    userTrade:async(parent,{username})=>{
+      const user=await User.findOne({username})
+      const userTradeId=user.trades._id
+      return await Trade.find({userTradeId})
+      .populate("trader")
+        .populate("recipient")
+        .populate("offeredCard")
+        .populate("requestedCard")
+    
+  }
+},
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -115,7 +125,15 @@ createTrade: async (
     $addToSet: { trades: newTrade._id }
   }, { new: true });
 
-  return newTrade;
+        // Populate 'trader' field before returning
+     const populatedTrade = await Trade.findById(newTrade._id)
+      .populate('trader')
+      .populate('recipient')
+      .populate('offeredCard')
+      .populate('requestedCard')
+      .exec();
+
+    return populatedTrade;
 }
 ,
     changeTradeStatus: async (parent, { _id, status }) => {
@@ -146,7 +164,15 @@ createTrade: async (
           $pull: { savedCards: { $in: currentTrade.offeredCard } },
         });
 
-        return currentTrade;
+        //Populate
+         const populatedTrade = await Trade.findById(currentTrade._id)
+        .populate('trader')
+        .populate('recipient')
+        .populate('offeredCard')
+        .populate('requestedCard')
+        .exec();
+
+      return populatedTrade;
       } else if (currentTrade.status === "rejected") {
         await Trade.findByIdAndDelete(_id);
       }
