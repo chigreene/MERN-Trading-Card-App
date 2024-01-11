@@ -4,31 +4,31 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
- const users = await User.find({})
-//  https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
-          .populate('savedCards')
-          .populate({
-            path: 'trades',
+      const users = await User.find({})
+        //  https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
+        .populate("savedCards")
+        .populate({
+          path: "trades",
+          populate: {
+            path: "offeredCard requestedCard",
             populate: {
-              path: 'offeredCard requestedCard',
- populate: {
-              path: 'offeredCard requestedCard trader recipient',
-            }
-            }
-          });
-  return users
+              path: "offeredCard requestedCard trader recipient",
+            },
+          },
+        });
+      return users;
     },
     user: async (parent, { username }) => {
-      const user = await User.findOne({username})
-          .populate('savedCards')
-          .populate({
-            path: 'trades',
-            populate: {
-              path: 'offeredCard requestedCard trader recipient',
-            }
-          });
-  return user
-        },
+      const user = await User.findOne({ username })
+        .populate("savedCards")
+        .populate({
+          path: "trades",
+          populate: {
+            path: "offeredCard requestedCard trader recipient",
+          },
+        });
+      return user;
+    },
     cards: async () => {
       return await Card.find({});
     },
@@ -55,7 +55,7 @@ const resolvers = {
         .populate("offeredCard")
         .populate("requestedCard");
     },
-},
+  },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -110,42 +110,49 @@ const resolvers = {
     removeCard: async (parent, { card_id }) => {
       return await Card.findOneAndDelete({ card_id });
     },
-createTrade: async (
-  parent,
-  { trader, recipient, offeredCard, requestedCard }
-) => {
-  const Trader = await User.findOne({ username: trader });
-  const Recipient = await User.findOne({ username: recipient });
-  const OfferedCard = await Card.findOne({ card_id: offeredCard });
-  const RequestedCard = await Card.findOne({ card_id: requestedCard });
+    createTrade: async (
+      parent,
+      { trader, recipient, offeredCard, requestedCard }
+    ) => {
+      const Trader = await User.findOne({ username: trader });
+      const Recipient = await User.findOne({ username: recipient });
+      const OfferedCard = await Card.findOne({ card_id: offeredCard });
+      const RequestedCard = await Card.findOne({ card_id: requestedCard });
 
-  const newTrade = await Trade.create({
-    trader: Trader._id,
-    recipient: Recipient._id,
-    offeredCard: OfferedCard._id,
-    requestedCard: RequestedCard._id,
-  });
+      const newTrade = await Trade.create({
+        trader: Trader._id,
+        recipient: Recipient._id,
+        offeredCard: OfferedCard._id,
+        requestedCard: RequestedCard._id,
+      });
 
-  // Adding Trade to both Trader and Recipient
-  await User.findByIdAndUpdate(Trader._id, {
-    $addToSet: { trades: newTrade._id }
-  }, { new: true });
+      // Adding Trade to both Trader and Recipient
+      await User.findByIdAndUpdate(
+        Trader._id,
+        {
+          $addToSet: { trades: newTrade._id },
+        },
+        { new: true }
+      );
 
-  await User.findByIdAndUpdate(Recipient._id, {
-    $addToSet: { trades: newTrade._id }
-  }, { new: true });
+      await User.findByIdAndUpdate(
+        Recipient._id,
+        {
+          $addToSet: { trades: newTrade._id },
+        },
+        { new: true }
+      );
 
-        // Populate 'trader' field before returning
-     const populatedTrade = await Trade.findById(newTrade._id)
-      .populate('trader')
-      .populate('recipient')
-      .populate('offeredCard')
-      .populate('requestedCard')
-      .exec();
+      // Populate 'trader' field before returning
+      const populatedTrade = await Trade.findById(newTrade._id)
+        .populate("trader")
+        .populate("recipient")
+        .populate("offeredCard")
+        .populate("requestedCard")
+        .exec();
 
-    return populatedTrade;
-}
-,
+      return populatedTrade;
+    },
     changeTradeStatus: async (parent, { _id, status }) => {
       // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
       //you cant $pull and $addToSet at the time must be seperate will cause a error
@@ -173,16 +180,7 @@ createTrade: async (
         await User.findByIdAndUpdate(currentTrade.trader, {
           $pull: { savedCards: { $in: currentTrade.offeredCard } },
         });
-
-        //Populate
-         const populatedTrade = await Trade.findById(currentTrade._id)
-        .populate('trader')
-        .populate('recipient')
-        .populate('offeredCard')
-        .populate('requestedCard')
-        .exec();
-
-      return populatedTrade;
+        await Trade.findByIdAndDelete(_id);
       } else if (currentTrade.status === "rejected") {
         await Trade.findByIdAndDelete(_id);
       }
