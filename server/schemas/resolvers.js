@@ -114,17 +114,23 @@ createTrade: async (
   parent,
   { trader, recipient, offeredCard, requestedCard }
 ) => {
-  const Trader = await User.findOne({ username: trader });
-  const Recipient = await User.findOne({ username: recipient });
-  const OfferedCard = await Card.findOne({ card_id: offeredCard });
-  const RequestedCard = await Card.findOne({ card_id: requestedCard });
+   const Trader = await User.findOne({ username: trader });
+    const Recipient = await User.findOne({ username: recipient });
 
-  const newTrade = await Trade.create({
-    trader: Trader._id,
-    recipient: Recipient._id,
-    offeredCard: OfferedCard._id,
-    requestedCard: RequestedCard._id,
-  });
+    // Fetch array of offered cards using their IDs
+    const OfferedCards = await Card.find({ card_id: { $in: offeredCard } });
+    const offeredCardIds = OfferedCards.map((card) => card._id);
+
+    // Fetch array of requested cards using their IDs
+    const RequestedCards = await Card.find({ card_id: { $in: requestedCard } });
+    const requestedCardIds = RequestedCards.map((card) => card._id);
+
+    const newTrade = await Trade.create({
+      trader: Trader._id,
+      recipient: Recipient._id,
+      offeredCard: offeredCardIds,
+      requestedCard: requestedCardIds,
+    });
 
   // Adding Trade to both Trader and Recipient
   await User.findByIdAndUpdate(Trader._id, {
