@@ -1,13 +1,15 @@
-import React from 'react';
-import SavedCards from '../savedCards';
-import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_USER } from '../../../utils/queries';
-import { CHANGE_TRADE_STATUS } from '../../../utils/mutations';
+import React from "react";
+import SavedCards from "../savedCards";
+import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_USER } from "../../../utils/queries";
+import { CHANGE_TRADE_STATUS } from "../../../utils/mutations";
 import Auth from "../../../utils/auth";
 
 const Trades = () => {
   const profile = Auth.getProfile();
-  const username = profile?.data?.username || '';
+
+  const username = profile?.data?.username || "";
+
   const { loading, data } = useQuery(QUERY_USER, {
     fetchPolicy: "no-cache",
     variables: { username: username },
@@ -26,19 +28,18 @@ const Trades = () => {
     return <h1>No active trades</h1>;
   }
 
-const onClick = async (tradeId, update) => {
-  try {
-    await changeTradeStatus({
-      variables: { id: tradeId, status: update },
-    });
-    
-    // Refresh the page after the mutation is executed
-    window.location.reload();
-  } catch (error) {
-    console.error("Error updating trade status:", error);
-  }
-};
+  const onClick = async (tradeId, update) => {
+    try {
+      await changeTradeStatus({
+        variables: { id: tradeId, status: update },
+      });
 
+      // Refresh the page after the mutation is executed
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating trade status:", error);
+    }
+  };
 
   return (
     <div>
@@ -46,6 +47,7 @@ const onClick = async (tradeId, update) => {
       {userTrades.map((trade) => (
         <div key={trade._id} className="trade-item">
           <h3>Status: {trade.status}</h3>
+
 {username === trade.recipient.username && (
   <div>
     <button

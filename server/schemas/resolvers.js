@@ -4,31 +4,28 @@ const { signToken, AuthenticationError } = require("../utils/auth");
 const resolvers = {
   Query: {
     users: async () => {
- const users = await User.find({})
-//  https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
-          .populate('savedCards')
-          .populate({
-            path: 'trades',
-            populate: {
-              path: 'offeredCard requestedCard',
- populate: {
-              path: 'offeredCard requestedCard trader recipient',
-            }
-            }
-          });
-  return users
+      const users = await User.find({})
+        //  https://dev.to/paras594/how-to-use-populate-in-mongoose-node-js-mo0
+        .populate("savedCards")
+        .populate({
+          path: "trades",
+          populate: {
+            path: "offeredCard requestedCard trader recipient",
+          },
+        });
+      return users;
     },
     user: async (parent, { username }) => {
-      const user = await User.findOne({username})
-          .populate('savedCards')
-          .populate({
-            path: 'trades',
-            populate: {
-              path: 'offeredCard requestedCard trader recipient',
-            }
-          });
-  return user
-        },
+      const user = await User.findOne({ username })
+        .populate("savedCards")
+        .populate({
+          path: "trades",
+          populate: {
+            path: "offeredCard requestedCard trader recipient",
+          },
+        });
+      return user;
+    },
     cards: async () => {
       return await Card.find({});
     },
@@ -55,7 +52,7 @@ const resolvers = {
         .populate("offeredCard")
         .populate("requestedCard");
     },
-},
+  },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -110,6 +107,7 @@ const resolvers = {
     removeCard: async (parent, { card_id }) => {
       return await Card.findOneAndDelete({ card_id });
     },
+
 createTrade: async (
   parent,
   { trader, recipient, offeredCard, requestedCard }
@@ -152,6 +150,7 @@ createTrade: async (
     return populatedTrade;
 }
 ,
+
     changeTradeStatus: async (parent, { _id, status }) => {
       // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
       //you cant $pull and $addToSet at the time must be seperate will cause a error
@@ -179,7 +178,6 @@ createTrade: async (
         await User.findByIdAndUpdate(currentTrade.trader, {
           $pull: { savedCards: { $in: currentTrade.offeredCard } },
         });
-
         await Trade.findByIdAndDelete(_id);
       } else if (currentTrade.status === "rejected") {
         await Trade.findByIdAndDelete(_id);
