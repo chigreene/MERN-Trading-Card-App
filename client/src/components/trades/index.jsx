@@ -7,6 +7,7 @@ import Auth from "../../../utils/auth";
 
 const Trades = () => {
   const profile = Auth.getProfile();
+
   const username = profile?.data?.username || "";
 
   const { loading, data } = useQuery(QUERY_USER, {
@@ -21,6 +22,7 @@ const Trades = () => {
   }
 
   const userTrades = data?.user?.trades || [];
+
 
   if (userTrades.length === 0) {
     return <h1>No active trades</h1>;
@@ -45,22 +47,26 @@ const Trades = () => {
       {userTrades.map((trade) => (
         <div key={trade._id} className="trade-item">
           <h3>Status: {trade.status}</h3>
-          <div>
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={() => onClick(trade._id, "accepted")}
-            >
-              Accept
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => onClick(trade._id, "rejected")}
-            >
-              Reject
-            </button>
-          </div>
+
+{username === trade.recipient.username && (
+  <div>
+    <button
+      type="button"
+      className="btn btn-success"
+      onClick={() => onClick(trade._id, 'accepted')}
+    >
+      Accept
+    </button>
+    <button
+      type="button"
+      className="btn btn-danger"
+      onClick={() => onClick(trade._id, 'rejected')}
+    >
+      Reject
+    </button>
+  </div>
+)}
+
           <p>Trader: {trade.trader.username}</p>
           <p>Recipient: {trade.recipient.username}</p>
           <div>

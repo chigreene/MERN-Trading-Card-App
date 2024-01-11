@@ -107,49 +107,50 @@ const resolvers = {
     removeCard: async (parent, { card_id }) => {
       return await Card.findOneAndDelete({ card_id });
     },
-    createTrade: async (
-      parent,
-      { trader, recipient, offeredCard, requestedCard }
-    ) => {
-      const Trader = await User.findOne({ username: trader });
-      const Recipient = await User.findOne({ username: recipient });
-      const OfferedCard = await Card.findOne({ card_id: offeredCard });
-      const RequestedCard = await Card.findOne({ card_id: requestedCard });
 
-      const newTrade = await Trade.create({
-        trader: Trader._id,
-        recipient: Recipient._id,
-        offeredCard: OfferedCard._id,
-        requestedCard: RequestedCard._id,
-      });
+createTrade: async (
+  parent,
+  { trader, recipient, offeredCard, requestedCard }
+) => {
+   const Trader = await User.findOne({ username: trader });
+    const Recipient = await User.findOne({ username: recipient });
 
-      // Adding Trade to both Trader and Recipient
-      await User.findByIdAndUpdate(
-        Trader._id,
-        {
-          $addToSet: { trades: newTrade._id },
-        },
-        { new: true }
-      );
+    // Fetch array of offered cards using their IDs
+    const OfferedCards = await Card.find({ card_id: { $in: offeredCard } });
+    const offeredCardIds = OfferedCards.map((card) => card._id);
 
-      await User.findByIdAndUpdate(
-        Recipient._id,
-        {
-          $addToSet: { trades: newTrade._id },
-        },
-        { new: true }
-      );
+    // Fetch array of requested cards using their IDs
+    const RequestedCards = await Card.find({ card_id: { $in: requestedCard } });
+    const requestedCardIds = RequestedCards.map((card) => card._id);
 
-      // Populate 'trader' field before returning
-      const populatedTrade = await Trade.findById(newTrade._id)
-        .populate("trader")
-        .populate("recipient")
-        .populate("offeredCard")
-        .populate("requestedCard")
-        .exec();
+    const newTrade = await Trade.create({
+      trader: Trader._id,
+      recipient: Recipient._id,
+      offeredCard: offeredCardIds,
+      requestedCard: requestedCardIds,
+    });
 
-      return populatedTrade;
-    },
+  // Adding Trade to both Trader and Recipient
+  await User.findByIdAndUpdate(Trader._id, {
+    $addToSet: { trades: newTrade._id }
+  }, { new: true });
+
+  await User.findByIdAndUpdate(Recipient._id, {
+    $addToSet: { trades: newTrade._id }
+  }, { new: true });
+
+        // Populate 'trader' field before returning
+     const populatedTrade = await Trade.findById(newTrade._id)
+      .populate('trader')
+      .populate('recipient')
+      .populate('offeredCard')
+      .populate('requestedCard')
+      .exec();
+
+    return populatedTrade;
+}
+,
+
     changeTradeStatus: async (parent, { _id, status }) => {
       // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
       //you cant $pull and $addToSet at the time must be seperate will cause a error

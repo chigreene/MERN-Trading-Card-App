@@ -51,8 +51,8 @@ const typeDefs = `
     createTrade(
       trader: String!
       recipient: String!
-      offeredCard: String!
-      requestedCard: String!
+      offeredCard: [ID]!
+      requestedCard: [ID]!
     ): Trade
 
       changeTradeStatus(_id:ID!,status:String!):Trade
