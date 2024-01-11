@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../utils/mutations";
 import "./trade.css";
+import { QUERY_USERS } from "../../utils/queries";
 import Trades from "../components/trades";
 import Auth from "../../utils/auth";
+
 function TradePage() {
   const profile = Auth.getProfile();
   const username = profile?.data?.username || "";
+
   const [formState, setFormState] = useState({
     trader: username,
     recipient: "",
     offeredCard: "",
     requestedCard: "",
   });
+
+  const { loading, data } = useQuery(QUERY_USERS);
+  console.log("QUERY_USERS", data);
 
   const [createTrade] = useMutation(CREATE_TRADE, {
     variables: formState,
@@ -30,6 +36,11 @@ function TradePage() {
     event.preventDefault();
     createTrade();
   };
+
+  // console.log("BOB123", data.users);
+
+  console.log("BOB123", formState.recipient);
+
   return (
     <>
       {Auth.loggedIn() ? (
@@ -43,27 +54,65 @@ function TradePage() {
               type="text"
               placeholder="Trader"
             />
-            <input
+            <label htmlFor="recipient">Recipient:</label>
+            <select
+              id="recipient"
               name="recipient"
               value={formState.recipient}
               onChange={handleInputChange}
-              type="text"
-              placeholder="Recipient"
-            />
-            <input
+            >
+              <option value="">Select a recipient...</option>
+              {loading ? (
+                <option>Loading...</option>
+              ) : (
+                data?.users
+                  ?.filter((user) => user.username !== username)
+                  .map((user) => (
+                    <option key={user._id} value={user.username}>
+                      {user.username}
+                    </option>
+                  ))
+              )}
+            </select>
+            <label htmlFor="offeredCard">Offered Card:</label>
+            <select
+              id="offeredCard"
               name="offeredCard"
               value={formState.offeredCard}
               onChange={handleInputChange}
-              type="text"
-              placeholder="Offered Card"
-            />
-            <input
+            >
+              {loading ? (
+                <option>Loading...</option>
+              ) : (
+                data?.users
+                  ?.find((user) => user.username === username)
+                  ?.savedCards.map((card) => (
+                    <option key={card._id} value={card.card_id}>
+                      {card.name}
+                    </option>
+                  ))
+              )}
+            </select>
+            <label htmlFor="requestedCard">Requested Card:</label>
+            <select
+              id="requestedCard"
               name="requestedCard"
               value={formState.requestedCard}
               onChange={handleInputChange}
-              type="text"
-              placeholder="Requested Card"
-            />
+            >
+              {loading ? (
+                <option>Loading...</option>
+              ) : (
+                data?.users
+                  ?.find((user) => user.username === formState.recipient)
+                  ?.savedCards.map((card) => (
+                    <option key={card._id} value={card.card_id}>
+                      {card.name}
+                    </option>
+                  ))
+              )}
+            </select>
+
             <button type="submit">Submit</button>
           </form>
         </>
