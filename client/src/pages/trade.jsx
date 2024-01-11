@@ -81,6 +81,7 @@ function TradePage() {
               value={formState.offeredCard}
               onChange={handleInputChange}
             >
+              <option value="">Select a card...</option>
               {loading ? (
                 <option>Loading...</option>
               ) : (
@@ -100,6 +101,7 @@ function TradePage() {
               value={formState.requestedCard}
               onChange={handleInputChange}
             >
+              <option value="">Select a card...</option>
               {loading ? (
                 <option>Loading...</option>
               ) : (
