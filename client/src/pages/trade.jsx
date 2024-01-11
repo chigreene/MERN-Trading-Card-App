@@ -18,7 +18,8 @@ function TradePage() {
   });
 
   const { loading, data } = useQuery(QUERY_USERS);
-  console.log("QUERY_USERS", data);
+  console.log("Loading state: ", loading);
+  console.log("Data object: ", data);
 
   const [createTrade] = useMutation(CREATE_TRADE, {
     variables: formState,
@@ -32,9 +33,10 @@ function TradePage() {
     });
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    createTrade();
+    await createTrade();
+    window.location.reload();
   };
 
   // console.log("BOB123", data.users);
@@ -46,7 +48,7 @@ function TradePage() {
       {Auth.loggedIn() ? (
         <>
           <h1>Trade Page</h1>
-          <Trades></Trades>
+
           <form onSubmit={handleFormSubmit}>
             <input
               name="trader"
@@ -54,7 +56,7 @@ function TradePage() {
               type="text"
               placeholder="Trader"
             />
-            <label htmlFor="recipient">Recipient:</label>
+            {/* <label htmlFor="recipient">Recipient:</label> */}
             <select
               id="recipient"
               name="recipient"
@@ -74,7 +76,7 @@ function TradePage() {
                   ))
               )}
             </select>
-            <label htmlFor="offeredCard">Offered Card:</label>
+            {/* <label htmlFor="offeredCard">Offered Card:</label> */}
             <select
               id="offeredCard"
               name="offeredCard"
@@ -94,7 +96,7 @@ function TradePage() {
                   ))
               )}
             </select>
-            <label htmlFor="requestedCard">Requested Card:</label>
+            {/* <label htmlFor="requestedCard">Requested Card:</label> */}
             <select
               id="requestedCard"
               name="requestedCard"
@@ -117,6 +119,7 @@ function TradePage() {
 
             <button type="submit">Submit</button>
           </form>
+          <Trades></Trades>
         </>
       ) : (
         <h1>Must Be Logged In</h1>

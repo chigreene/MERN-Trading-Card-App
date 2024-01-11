@@ -10,10 +10,7 @@ const resolvers = {
         .populate({
           path: "trades",
           populate: {
-            path: "offeredCard requestedCard",
-            populate: {
-              path: "offeredCard requestedCard trader recipient",
-            },
+            path: "offeredCard requestedCard trader recipient",
           },
         });
       return users;
