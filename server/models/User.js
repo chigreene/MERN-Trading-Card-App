@@ -25,6 +25,12 @@ const userSchema = new Schema({
       ref: "Card",
     },
   ],
+  trades:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Trade",
+    },
+  ]
 });
 
 // Middleware to runs before the saving to the database

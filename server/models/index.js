@@ -1,4 +1,5 @@
-const User=require('./User')
-const Card=require('./Card')
+const User = require("./User");
+const Card = require("./Card");
+const Trade = require("./Trade");
 
-module.exports={User,Card}
+module.exports = { User, Card, Trade };

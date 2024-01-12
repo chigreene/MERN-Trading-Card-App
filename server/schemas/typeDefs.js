@@ -5,6 +5,7 @@ const typeDefs = `
     email: String
     password: String
     savedCards: [Card]
+    trades:[Trade]
   }
 
   type Auth {
@@ -20,6 +21,15 @@ const typeDefs = `
     description: String
   }
 
+   type Trade {
+    _id: ID!
+    trader: User
+    recipient: User
+    offeredCard: [Card]
+    requestedCard: [Card]
+    status: String
+  }
+
   type Query {
     users: [User]
     user(username: String!): User
@@ -27,6 +37,7 @@ const typeDefs = `
     card(card_id: ID!): Card
     cardPack: [Card]
     me: User
+    trades: [Trade]
   }
 
   type Mutation{
@@ -36,7 +47,15 @@ const typeDefs = `
     addCardsToUser(username: String!, card_ids: [ID]!): User
     removeCardFromUser(username:String!,card_id:ID!):User
     addCard(card_id:ID!,name:String!,rarity:String!,description:String!):Card
-    removeCard(card_id:ID!):Card 
+    removeCard(card_id:ID!):Card
+    createTrade(
+      trader: String!
+      recipient: String!
+      offeredCard: [ID]!
+      requestedCard: [ID]!
+    ): Trade
+
+      changeTradeStatus(_id:ID!,status:String!):Trade
   }
 `;
 
