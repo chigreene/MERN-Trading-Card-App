@@ -49,15 +49,10 @@ function SavedCards({ savedCards }) {
             <h6 className={card.rarity}>{card.rarity}</h6>
             <p className="card-text">{card.description}</p>
             <div className="options">
-{username === Username ? (
-  <div className='options' id='delete' onClick={() => onDeleteClick(card.card_id)}>
+{username === Username && (
+  <div id="deleteIcon" onClick={() => onDeleteClick(card.card_id)}>
     <img src={tempDelete} alt="Delete" />
     <p>Delete Card</p>
-  </div>
-) : (
-  <div className="options" id='trade'>
-   <img src={tempTrade}></img>
-   <p>Trade Card</p>
   </div>
 )}
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../utils/mutations";
@@ -40,6 +39,9 @@ function TradePage() {
     window.location.reload();
   };
 
+  // console.log("BOB123", data.users);
+
+  console.log("BOB123", formState.recipient);
 
   return (
     <>

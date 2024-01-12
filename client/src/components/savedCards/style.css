@@ -46,14 +46,10 @@
   color: orange;
 }
 
-.options img:hover {
+#deleteIcon img:hover {
   cursor: pointer;
 }
 
-.options #delete p {
+#deleteIcon p {
   color: red;
-}
-
-.options #trade p {
-  color:green;
 }
