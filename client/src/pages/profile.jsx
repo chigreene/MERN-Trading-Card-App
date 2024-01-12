@@ -25,20 +25,23 @@ function ProfilePage() {
 
   if (!user || !user.username) {
     return (
-      <h4>
-        different users page
-      </h4>
+      <h1>
+        Must Be Logged In
+      </h1>
     );
   }
 
 
   return (
     <>
-      <section id="profile">
-        <h1>Hello {user.username}</h1>
-        <SavedCards savedCards={user.savedCards}></SavedCards>
-      </section>
-    
+    <section id="profile">
+      <h1>Hello {user.username}</h1>
+      {Auth.getProfile().data.username !== userParam ? (
+        <SavedCards savedCards={user.savedCards} Username={user.username} />
+      ) : (
+        <SavedCards savedCards={user.savedCards} Username={userParam} />
+      )}
+    </section>
     </>
   );
 }
