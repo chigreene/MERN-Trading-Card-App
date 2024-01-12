@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element:<TradePage></TradePage>
       },
       {
-        path:'/:username',
+        path:'/users/:username',
         element:<ProfilePage></ProfilePage>
       }
     ],
