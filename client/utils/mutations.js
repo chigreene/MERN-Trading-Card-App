@@ -75,8 +75,8 @@ export const CREATE_TRADE = gql`
   mutation Mutation(
     $trader: String!
     $recipient: String!
-    $offeredCard: String!
-    $requestedCard: String!
+    $offeredCard: [ID]!
+    $requestedCard: [ID]!
   ) {
     createTrade(
       trader: $trader
@@ -89,25 +89,24 @@ export const CREATE_TRADE = gql`
         _id
         username
         email
+        password
         savedCards {
           _id
           card_id
           name
           rarity
           description
+        }
+        trades {
+          _id
+          status
         }
       }
       recipient {
         _id
         username
         email
-        savedCards {
-          _id
-          card_id
-          name
-          rarity
-          description
-        }
+        password
       }
       offeredCard {
         _id
@@ -175,49 +174,48 @@ export const ACCEPT_TRADE = gql`
   }
 `;
 
-export const CHANGE_TRADE_STATUS=gql`
-mutation Mutation($id: ID!, $status: String!) {
-  changeTradeStatus(_id: $id, status: $status) {
-    _id
-    trader {
+export const CHANGE_TRADE_STATUS = gql`
+  mutation Mutation($id: ID!, $status: String!) {
+    changeTradeStatus(_id: $id, status: $status) {
       _id
-      username
-      email
-      password
-      savedCards {
+      trader {
+        _id
+        username
+        email
+        password
+        savedCards {
+          _id
+          card_id
+          name
+          rarity
+          description
+        }
+        trades {
+          _id
+          status
+        }
+      }
+      recipient {
+        _id
+        username
+        email
+        password
+      }
+      offeredCard {
         _id
         card_id
         name
         rarity
         description
       }
-      trades {
+      requestedCard {
         _id
-        status
+        card_id
+        name
+        rarity
+        description
       }
+      status
     }
-    recipient {
-      _id
-      username
-      email
-      password
-    }
-    offeredCard {
-      _id
-      card_id
-      name
-      rarity
-      description
-    }
-    requestedCard {
-      _id
-      card_id
-      name
-      rarity
-      description
-    }
-    status
   }
-}
-`
-
+`;
