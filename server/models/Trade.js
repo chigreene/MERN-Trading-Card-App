@@ -15,14 +15,12 @@ const tradeSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Card",
-      required: true,
     },
   ],
   requestedCard: [
     {
       type: Schema.Types.ObjectId,
       ref: "Card",
-      required: true,
     },
   ],
   status: {

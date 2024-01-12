@@ -51,11 +51,12 @@ const typeDefs = `
     createTrade(
       trader: String!
       recipient: String!
-      offeredCard: [ID]!
+      offeredCard: [ID]
       requestedCard: [ID]!
     ): Trade
-
       changeTradeStatus(_id:ID!,status:String!):Trade
+      
+       editTrade(_id: ID!, request: [ID], offer: [ID]!): Trade
   }
 `;
 
