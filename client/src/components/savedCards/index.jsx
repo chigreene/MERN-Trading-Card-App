@@ -8,7 +8,7 @@ import "./style.css";
 // Image Imports
 import Card1 from "../../assets/resources/card1.png";
 import tempDelete from "../../assets/tempDeleteIcon.png";
-function SavedCards({ savedCards }) {
+function SavedCards({ savedCards,Username }) {
   if (!savedCards.length) {
     return <h1>No saved Cards Yet</h1>;
   }
@@ -16,7 +16,7 @@ function SavedCards({ savedCards }) {
   // Getting the username so the mutation can work
   const profile = Auth.getProfile();
   const username = profile.data.username;
-
+  
   //Delete Card
   const [deleteCard, { error, data }] = useMutation(DELETE_CARD);
 
@@ -48,10 +48,13 @@ function SavedCards({ savedCards }) {
             <h6 className={card.rarity}>{card.rarity}</h6>
             <p className="card-text">{card.description}</p>
             <div className="options">
-              <div id="deleteIcon" onClick={() => onDeleteClick(card.card_id)}>
-                <img src={tempDelete} alt="Delete" />
-                <p>Delete Card</p>
-              </div>
+{username === Username && (
+  <div id="deleteIcon" onClick={() => onDeleteClick(card.card_id)}>
+    <img src={tempDelete} alt="Delete" />
+    <p>Delete Card</p>
+  </div>
+)}
+
             </div>
           </div>
         </div>
