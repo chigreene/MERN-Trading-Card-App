@@ -1,0 +1,19 @@
+.tradeContainer {
+  color: white;
+  margin: 0 auto;
+  max-width: 600px;
+}
+.trade-item {
+  color: #f95738;
+  border: 2px solid #ffc600;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.pending {
+  color: yellow;
+  background-color: gray;
+  border-radius: 10px;
+  padding: 10px;
+}

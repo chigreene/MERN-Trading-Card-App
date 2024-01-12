@@ -4,7 +4,7 @@ import { Query_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
 import SavedCards from "../components/savedCards";
 
-import "./profile.css"
+import "./profile.css";
 
 function ProfilePage() {
   const { username: userParam } = useParams();
@@ -31,15 +31,13 @@ function ProfilePage() {
     );
   }
 
-
   return (
-    <>
+    <div className="container">
       <section id="profile">
         <h1>Hello {user.username}</h1>
         <SavedCards savedCards={user.savedCards}></SavedCards>
       </section>
-    
-    </>
+    </div>
   );
 }
 

@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_USER } from "../../../utils/queries";
 import { CHANGE_TRADE_STATUS } from "../../../utils/mutations";
 import Auth from "../../../utils/auth";
+import "./style.css";
 
 const Trades = () => {
   const profile = Auth.getProfile();
@@ -23,7 +24,6 @@ const Trades = () => {
 
   const userTrades = data?.user?.trades || [];
 
-
   if (userTrades.length === 0) {
     return <h1>No active trades</h1>;
   }
@@ -41,31 +41,33 @@ const Trades = () => {
     }
   };
 
+  console.log("UserTrade", data);
+
   return (
-    <div>
+    <div className="tradeContainer">
       <h2>User Trades</h2>
       {userTrades.map((trade) => (
         <div key={trade._id} className="trade-item">
-          <h3>Status: {trade.status}</h3>
+          <h3 className={trade.status}>Status: {trade.status}</h3>
 
-{username === trade.recipient.username && (
-  <div>
-    <button
-      type="button"
-      className="btn btn-success"
-      onClick={() => onClick(trade._id, 'accepted')}
-    >
-      Accept
-    </button>
-    <button
-      type="button"
-      className="btn btn-danger"
-      onClick={() => onClick(trade._id, 'rejected')}
-    >
-      Reject
-    </button>
-  </div>
-)}
+          {username === trade.recipient.username && (
+            <div>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => onClick(trade._id, "accepted")}
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => onClick(trade._id, "rejected")}
+              >
+                Reject
+              </button>
+            </div>
+          )}
 
           <p>Trader: {trade.trader.username}</p>
           <p>Recipient: {trade.recipient.username}</p>
