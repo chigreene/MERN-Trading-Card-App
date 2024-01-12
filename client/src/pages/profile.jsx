@@ -4,6 +4,7 @@ import { Query_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
 import SavedCards from "../components/savedCards";
 import { QUERY_USER } from "../../utils/queries";
+
 import "./profile.css"
 
 function ProfilePage() {

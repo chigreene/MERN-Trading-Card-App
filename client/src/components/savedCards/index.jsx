@@ -10,6 +10,7 @@ import tempDelete from "../../assets/tempDeleteIcon.png";
 import tempTrade from "../../assets/tempTrade.png";
 import CreateTrade from "../createTrade";
 
+
 function SavedCards({ savedCards, Username }) {
   const [selectCard, setSelect] = useState(null);
 
@@ -96,9 +97,9 @@ function SavedCards({ savedCards, Username }) {
           ))
         )}
       </div>
-      {/* <CreateTrade></CreateTrade> */}
     </>
   );
 }
 
 export default SavedCards;
+

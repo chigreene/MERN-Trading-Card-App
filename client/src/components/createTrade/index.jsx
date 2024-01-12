@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import {useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../../utils/mutations";
 import { QUERY_USERS } from "../../../utils/queries";
 import Auth from "../../../utils/auth";
 function CreateTrade({recipient,requestedCard}){
+const navigate=useNavigate()
 const profile = Auth.getProfile();
   const username = profile?.data?.username || "";
 
@@ -42,7 +44,7 @@ const profile = Auth.getProfile();
             }
         })
     }
-    window.location.reload();
+   navigate('/trade')
   };
 
   // console.log("BOB123", data.users);
