@@ -13,6 +13,7 @@ function TradePage() {
     <>
       {Auth.loggedIn() ? (
         <>
+                  <h1>Trade Page</h1>
           <CreateTrade></CreateTrade>
         <Trades></Trades>
         </>

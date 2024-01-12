@@ -50,7 +50,6 @@ const profile = Auth.getProfile();
   console.log("BOB123", formState.recipient);
 return (
             <>
-          <h1>Trade Page</h1>
 
           <form onSubmit={handleFormSubmit}>
             <input

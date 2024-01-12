@@ -36,11 +36,7 @@ function ProfilePage() {
     <>
     <section id="profile">
       <h1>Hello {user.username}</h1>
-      {Auth.getProfile().data.username !== userParam ? (
-        <SavedCards savedCards={user.savedCards} Username={user.username} />
-      ) : (
-        <SavedCards savedCards={user.savedCards} Username={userParam} />
-      )}
+      <SavedCards savedCards={user.savedCards} Username={user.username} ></SavedCards>
     </section>
     </>
   );
