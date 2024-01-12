@@ -183,6 +183,44 @@ createTrade: async (
         await Trade.findByIdAndDelete(_id);
       }
     },
+editTrade: async (parent, { _id, request, offer }) => {
+
+const offeredCard=await Card.findOne({card_id:offer})
+const requestedCard=await Card.findOne({card_id:request})
+
+if(!requestedCard){
+const currentTrade=await Trade.findByIdAndUpdate(
+  {_id},
+  {offeredCard},
+  {new:true})
+
+const populatedTrade = await Trade.findById(currentTrade._id)
+      .populate('trader')
+      .populate('recipient')
+      .populate('offeredCard')
+      .populate('requestedCard')
+      .exec();
+
+    return populatedTrade
+}else{
+  const currentTrade=await Trade.findByIdAndUpdate(
+  {_id},
+  {offeredCard},
+  {requestedCard},
+  {new:true})
+  
+const populatedTrade = await Trade.findById(currentTrade._id)
+      .populate('trader')
+      .populate('recipient')
+      .populate('offeredCard')
+      .populate('requestedCard')
+      .exec();
+
+    return populatedTrade
+}
+}
+
+
   },
 };
 

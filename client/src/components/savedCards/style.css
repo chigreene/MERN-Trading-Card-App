@@ -3,6 +3,7 @@
   min-width: 15rem;
   max-width: 15rem;
 }
+
 .card:hover .card-img-top {
   transition: 0.5s;
   filter: brightness(50%);
@@ -46,10 +47,14 @@
   color: orange;
 }
 
-#deleteIcon img:hover {
+.options img:hover {
   cursor: pointer;
 }
 
-#deleteIcon p {
+.options #delete p {
   color: red;
+}
+
+.options #trade p {
+  color: green;
 }

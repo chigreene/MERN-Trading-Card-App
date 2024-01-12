@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"; 
 import React from "react";
 import SavedCards from "../savedCards";
 import { useQuery, useMutation } from "@apollo/client";
@@ -67,8 +68,13 @@ const Trades = () => {
   </div>
 )}
 
+          <Link to={`/${trade.trader.username}`}>
           <p>Trader: {trade.trader.username}</p>
-          <p>Recipient: {trade.recipient.username}</p>
+          </Link>
+          <Link to={`/${trade.recipient.username}`}>
+         <p>Recipient: {trade.recipient.username}</p>
+          </Link>
+
           <div>
             <strong>Offered Cards:</strong>
             <SavedCards savedCards={trade.offeredCard} />
