@@ -37,6 +37,10 @@ const router = createBrowserRouter([
       {
         path:'/trade',
         element:<TradePage></TradePage>
+      },
+      {
+        path:'/users/:username',
+        element:<ProfilePage></ProfilePage>
       }
     ],
   },
