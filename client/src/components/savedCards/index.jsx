@@ -38,7 +38,8 @@ function SavedCards({ savedCards, Username }) {
   const onTradeClick = (cardID) => {
     setSelect(cardID);
   };
-
+  // Back Button
+  const onBackClick=()=>{setSelect(null)}
   if (!savedCards.length) {
     return <h1>No saved Cards Yet</h1>;
   }
@@ -48,8 +49,10 @@ function SavedCards({ savedCards, Username }) {
       <div className="card-container">
         {selectCard ? (    
       <>
+        <div>
+          <button onClick={onBackClick}>Back</button>
        <div className="card-body" style={{ width: "20rem", textAlign:'center'}} key={selectCard._id}>
-        <img className="card-img-top" src={Card1} alt="Card image cap" style={{width:'400px'}} />
+        <img className="card-img-top" src={Card1} alt="Card image cap" style={{width:'300px'}} />
          <h5 className="card-title">
                   # {selectCard.card_id} {selectCard.name}
           </h5>
@@ -57,6 +60,8 @@ function SavedCards({ savedCards, Username }) {
           <p className="card-text">{selectCard.description}</p>
         </div>
         <CreateTrade recipient={Username} requestedCard={selectCard.card_id}></CreateTrade>
+        </div>
+        
       </>
     ) : (
           savedCards.map((card) => (
