@@ -36,6 +36,7 @@ const typeDefs = `
     cards: [Card]
     card(card_id: ID!): Card
     cardPack: [Card]
+    rareCardPack: [Card]
     me: User
     trades: [Trade]
   }

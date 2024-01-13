@@ -37,6 +37,45 @@ const resolvers = {
       const cards = await Card.aggregate([{ $sample: { size: 3 } }]);
       return cards;
     },
+    rareCardPack: async () => {
+      // Define probabilities for each rarity level
+      const probabilities = {
+        common: 0.4,
+        uncommon: 0.3,
+        rare: 0.2,
+        legendary: 0.1,
+      };
+
+      // Function to determine rarity level
+      const determineRarity = () => {
+        const rand = Math.random();
+        if (rand < probabilities.legendary) {
+          return "legendary";
+        } else if (rand < probabilities.legendary + probabilities.rare) {
+          return "rare";
+        } else if (
+          rand <
+          probabilities.legendary + probabilities.rare + probabilities.uncommon
+        ) {
+          return "uncommon";
+        } else {
+          return "common";
+        }
+      };
+
+      // Draw 3 cards individually
+      const cards = [];
+      for (let i = 0; i < 3; i++) {
+        const rarity = determineRarity();
+        const card = await Card.aggregate([
+          { $match: { rarity: rarity } },
+          { $sample: { size: 1 } },
+        ]);
+        cards.push(card[0]);
+      }
+
+      return cards;
+    },
     // sets up route to allow user to access there profile with saved cards
     me: async (parent, args, context) => {
       console.log(context);
@@ -108,49 +147,57 @@ const resolvers = {
       return await Card.findOneAndDelete({ card_id });
     },
 
-createTrade: async (
-  parent,
-  { trader, recipient, offeredCard, requestedCard }
-) => {
-   const Trader = await User.findOne({ username: trader });
-    const Recipient = await User.findOne({ username: recipient });
+    createTrade: async (
+      parent,
+      { trader, recipient, offeredCard, requestedCard }
+    ) => {
+      const Trader = await User.findOne({ username: trader });
+      const Recipient = await User.findOne({ username: recipient });
 
-    // Fetch array of offered cards using their IDs
-    const OfferedCards = await Card.find({ card_id: { $in: offeredCard } });
-    const offeredCardIds = OfferedCards.map((card) => card._id);
+      // Fetch array of offered cards using their IDs
+      const OfferedCards = await Card.find({ card_id: { $in: offeredCard } });
+      const offeredCardIds = OfferedCards.map((card) => card._id);
 
-    // Fetch array of requested cards using their IDs
-    const RequestedCards = await Card.find({ card_id: { $in: requestedCard } });
-    const requestedCardIds = RequestedCards.map((card) => card._id);
+      // Fetch array of requested cards using their IDs
+      const RequestedCards = await Card.find({
+        card_id: { $in: requestedCard },
+      });
+      const requestedCardIds = RequestedCards.map((card) => card._id);
 
-    const newTrade = await Trade.create({
-      trader: Trader._id,
-      recipient: Recipient._id,
-      offeredCard: offeredCardIds,
-      requestedCard: requestedCardIds,
-    });
+      const newTrade = await Trade.create({
+        trader: Trader._id,
+        recipient: Recipient._id,
+        offeredCard: offeredCardIds,
+        requestedCard: requestedCardIds,
+      });
 
-  // Adding Trade to both Trader and Recipient
-  await User.findByIdAndUpdate(Trader._id, {
-    $addToSet: { trades: newTrade._id }
-  }, { new: true });
+      // Adding Trade to both Trader and Recipient
+      await User.findByIdAndUpdate(
+        Trader._id,
+        {
+          $addToSet: { trades: newTrade._id },
+        },
+        { new: true }
+      );
 
-  await User.findByIdAndUpdate(Recipient._id, {
-    $addToSet: { trades: newTrade._id }
-  }, { new: true });
+      await User.findByIdAndUpdate(
+        Recipient._id,
+        {
+          $addToSet: { trades: newTrade._id },
+        },
+        { new: true }
+      );
 
-        // Populate 'trader' field before returning
-     const populatedTrade = await Trade.findById(newTrade._id)
-      .populate('trader')
-      .populate('recipient')
-      .populate('offeredCard')
-      .populate('requestedCard')
-      .exec();
+      // Populate 'trader' field before returning
+      const populatedTrade = await Trade.findById(newTrade._id)
+        .populate("trader")
+        .populate("recipient")
+        .populate("offeredCard")
+        .populate("requestedCard")
+        .exec();
 
-    return populatedTrade;
-}
-,
-
+      return populatedTrade;
+    },
     changeTradeStatus: async (parent, { _id, status }) => {
       // https://stackoverflow.com/questions/24300148/pull-and-addtoset-at-the-same-time-with-mongo
       //you cant $pull and $addToSet at the time must be seperate will cause a error
@@ -183,44 +230,43 @@ createTrade: async (
         await Trade.findByIdAndDelete(_id);
       }
     },
-editTrade: async (parent, { _id, request, offer }) => {
+    editTrade: async (parent, { _id, request, offer }) => {
+      const offeredCard = await Card.findOne({ card_id: offer });
+      const requestedCard = await Card.findOne({ card_id: request });
 
-const offeredCard=await Card.findOne({card_id:offer})
-const requestedCard=await Card.findOne({card_id:request})
+      if (!requestedCard) {
+        const currentTrade = await Trade.findByIdAndUpdate(
+          { _id },
+          { offeredCard },
+          { new: true }
+        );
 
-if(!requestedCard){
-const currentTrade=await Trade.findByIdAndUpdate(
-  {_id},
-  {offeredCard},
-  {new:true})
+        const populatedTrade = await Trade.findById(currentTrade._id)
+          .populate("trader")
+          .populate("recipient")
+          .populate("offeredCard")
+          .populate("requestedCard")
+          .exec();
 
-const populatedTrade = await Trade.findById(currentTrade._id)
-      .populate('trader')
-      .populate('recipient')
-      .populate('offeredCard')
-      .populate('requestedCard')
-      .exec();
+        return populatedTrade;
+      } else {
+        const currentTrade = await Trade.findByIdAndUpdate(
+          { _id },
+          { offeredCard },
+          { requestedCard },
+          { new: true }
+        );
 
-    return populatedTrade
-}else{
-  const currentTrade=await Trade.findByIdAndUpdate(
-  {_id},
-  {offeredCard},
-  {requestedCard},
-  {new:true})
-  
-const populatedTrade = await Trade.findById(currentTrade._id)
-      .populate('trader')
-      .populate('recipient')
-      .populate('offeredCard')
-      .populate('requestedCard')
-      .exec();
+        const populatedTrade = await Trade.findById(currentTrade._id)
+          .populate("trader")
+          .populate("recipient")
+          .populate("offeredCard")
+          .populate("requestedCard")
+          .exec();
 
-    return populatedTrade
-}
-}
-
-
+        return populatedTrade;
+      }
+    },
   },
 };
 

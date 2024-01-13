@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_PACK, Query_ME } from "../../utils/queries";
+import { QUERY_PACK, Query_ME, QUERY_RAREPACK } from "../../utils/queries";
 import { ADD_CARD } from "../../utils/mutations";
 import "./home.css";
 import Auth from "../../utils/auth";
@@ -16,6 +16,14 @@ const Home = () => {
   const { loading: loadingPack, data: dataPack } = useQuery(QUERY_PACK, {
     fetchPolicy: "no-cache",
   });
+
+  const { loading: loadingRarePack, data: rareDataPack } = useQuery(
+    QUERY_RAREPACK,
+    {
+      fetchPolicy: "no-cache",
+    }
+  );
+
   const { loading: loadingMe, data: dataMe } = useQuery(Query_ME, {
     fetchPolicy: "no-cache",
   });
@@ -27,6 +35,12 @@ const Home = () => {
   const openPack = () => {
     const fetchData = dataPack?.cardPack || [];
     console.log("fetchData", fetchData);
+    setCards(fetchData);
+  };
+
+  const openRarePack = () => {
+    const fetchData = rareDataPack?.rareCardPack || [];
+    console.log("fetchRareData", fetchData);
     setCards(fetchData);
   };
 
@@ -63,6 +77,16 @@ const Home = () => {
                 type="button"
                 className="btn btn-light"
                 onClick={openPack}
+              >
+                Open Pack
+              </button>
+              {/* rare pack */}
+              <p>Rare Pack</p>
+              <img className="packImg" src={packImg} alt="Pack image" />
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={openRarePack}
               >
                 Open Pack
               </button>

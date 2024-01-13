@@ -124,4 +124,16 @@ export const QUERY_PACK = gql`
   }
 `;
 
+export const QUERY_RAREPACK = gql`
+  query RareCardPack {
+    rareCardPack {
+      _id
+      card_id
+      name
+      rarity
+      description
+    }
+  }
+`;
+
 // export const QUERY_TRADES = gql``;
