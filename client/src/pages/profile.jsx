@@ -5,7 +5,7 @@ import Auth from "../../utils/auth";
 import SavedCards from "../components/savedCards";
 import { QUERY_USER } from "../../utils/queries";
 
-import "./profile.css"
+import "./profile.css";
 
 function ProfilePage() {
   const { username: userParam } = useParams();
@@ -13,7 +13,7 @@ function ProfilePage() {
   const { loading, data } = useQuery(userParam ? QUERY_USER : Query_ME, {
     variables: { username: userParam },
   });
-  
+
   const user = data?.me || data?.user || {};
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Navigate to="/me" />;
@@ -25,21 +25,16 @@ function ProfilePage() {
   }
 
   if (!user || !user.username) {
-    return (
-      <h1>
-        Must Be Logged In
-      </h1>
-    );
+    return <h1>Must Be Logged In</h1>;
   }
 
-
   return (
-    <>
-    <section id="profile">
-      <h1>Hello {user.username}</h1>
-      <SavedCards savedCards={user.savedCards} Username={user.username} ></SavedCards>
-    </section>
-    </>
+    <div className="container">
+      <section id="profile">
+        <h1>Hello {user.username}</h1>
+        <SavedCards savedCards={user.savedCards}></SavedCards>
+      </section>
+    </div>
   );
 }
 

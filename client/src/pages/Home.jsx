@@ -52,7 +52,7 @@ const Home = () => {
   };
 
   return (
-    <>
+    <div className="container">
       {Auth.loggedIn() ? (
         <div>
           <h1>Hello {username}</h1>
@@ -106,7 +106,7 @@ const Home = () => {
       ) : (
         <h1>Must be logged in</h1>
       )}
-    </>
+    </div>
   );
 };
 
