@@ -72,6 +72,7 @@ const Home = () => {
           <h1>Hello {username}</h1>
           {cards.length === 0 ? (
             <div className="openPackBtn">
+              <h2>Common Pack</h2>
               <img className="packImg" src={packImg} alt="Pack image" />
               <button
                 type="button"
@@ -81,8 +82,8 @@ const Home = () => {
                 Open Pack
               </button>
               {/* rare pack */}
-              <p>Rare Pack</p>
-              <img className="packImg" src={packImg} alt="Pack image" />
+              <h2>Rare Pack</h2>
+              <img className="rarePackImg" src={packImg} alt="Pack image" />
               <button
                 type="button"
                 className="btn btn-light"

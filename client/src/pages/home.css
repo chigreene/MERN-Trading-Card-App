@@ -15,6 +15,12 @@ h1 {
   font-family: "Bungee";
 }
 
+h2 {
+  color: var(--primary);
+  text-align: center;
+  font-family: "Bungee";
+}
+
 .parent-container {
   display: flex;
   flex-direction: column;
@@ -40,10 +46,40 @@ h1 {
   align-items: center;
 }
 
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000,
+      0 0 20px #ff0000;
+  }
+  100% {
+    box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000,
+      0 0 40px #ff0000;
+  }
+}
+
+@keyframes rareGlow {
+  0% {
+    box-shadow: 0 0 5px yellowgreen, 0 0 10px yellowgreen, 0 0 15px yellowgreen,
+      0 0 20px yellowgreen;
+  }
+  100% {
+    box-shadow: 0 0 10px yellowgreen, 0 0 20px yellowgreen, 0 0 30px yellowgreen,
+      0 0 40px yellowgreen;
+  }
+}
+
 .packImg {
   z-index: 0;
   margin: auto;
+  animation: glow 2s ease-in-out infinite alternate;
 }
+
+.rarePackImg {
+  z-index: 0;
+  margin: auto;
+  animation: rareGlow 2s ease-in-out infinite alternate;
+}
+
 .openPackBtn .btn {
   z-index: 1;
   position: relative;
