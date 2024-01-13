@@ -8,7 +8,7 @@ nav {
   justify-content: space-evenly;
 }
 
-a {
+nav a {
   /* play with box shadow more */
   font-weight: bolder;
   border: #ffc600 2px solid;
@@ -21,6 +21,6 @@ a {
   /* transition:.5s; */
 }
 
-a:hover {
+nav a:hover {
   box-shadow: 2px 2px 2px 2px black;
 }

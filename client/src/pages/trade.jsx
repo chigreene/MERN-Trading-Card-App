@@ -3,46 +3,11 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../utils/mutations";
 import "./trade.css";
 import { QUERY_USERS } from "../../utils/queries";
+import CreateTrade from "../components/createTrade";
 import Trades from "../components/trades";
 import Auth from "../../utils/auth";
 
 function TradePage() {
-  const profile = Auth.getProfile();
-  const username = profile?.data?.username || "";
-
-  const [formState, setFormState] = useState({
-    trader: username,
-    recipient: "",
-    offeredCard: "",
-    requestedCard: "",
-  });
-
-  const { loading, data } = useQuery(QUERY_USERS);
-  console.log("Loading state: ", loading);
-  console.log("Data object: ", data);
-
-  const [createTrade] = useMutation(CREATE_TRADE, {
-    variables: formState,
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    await createTrade();
-    window.location.reload();
-  };
-
-  // console.log("BOB123", data.users);
-
-  console.log("BOB123", formState.recipient);
-
   return (
     <div className="container">
       {Auth.loggedIn() ? (
