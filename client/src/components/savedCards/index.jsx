@@ -10,7 +10,6 @@ import tempDelete from "../../assets/tempDeleteIcon.png";
 import tempTrade from "../../assets/tempTrade.png";
 import CreateTrade from "../createTrade";
 
-
 function SavedCards({ savedCards, Username }) {
   const [selectCard, setSelect] = useState(null);
 
@@ -39,31 +38,44 @@ function SavedCards({ savedCards, Username }) {
     setSelect(cardID);
   };
   // Back Button
-  const onBackClick=()=>{setSelect(null)}
+  const onBackClick = () => {
+    setSelect(null);
+  };
   if (!savedCards.length) {
     return <h1>No saved Cards Yet</h1>;
   }
-   
+
   return (
     <>
       <div className="card-container">
-        {selectCard ? (    
-      <>
-        <div>
-          <button onClick={onBackClick}>Back</button>
-       <div className="card-body" style={{ width: "20rem", textAlign:'center'}} key={selectCard._id}>
-        <img className="card-img-top" src={Card1} alt="Card image cap" style={{width:'300px'}} />
-         <h5 className="card-title">
+        {selectCard ? (
+          <>
+            <div>
+              <button onClick={onBackClick}>Back</button>
+              <div
+                className="card-body"
+                style={{ width: "20rem", textAlign: "center" }}
+                key={selectCard._id}
+              >
+                <img
+                  className="card-img-top"
+                  src={Card1}
+                  alt="Card image cap"
+                  style={{ width: "300px" }}
+                />
+                <h5 className="card-title">
                   # {selectCard.card_id} {selectCard.name}
-          </h5>
-          <h6 className={selectCard.rarity}>{selectCard.rarity}</h6>
-          <p className="card-text">{selectCard.description}</p>
-        </div>
-        <CreateTrade recipient={Username} requestedCard={selectCard.card_id}></CreateTrade>
-        </div>
-        
-      </>
-    ) : (
+                </h5>
+                <h6 className={selectCard.rarity}>{selectCard.rarity}</h6>
+                <p className="card-text">{selectCard.description}</p>
+              </div>
+              <CreateTrade
+                recipient={Username}
+                requestedCard={selectCard.card_id}
+              ></CreateTrade>
+            </div>
+          </>
+        ) : (
           savedCards.map((card) => (
             <div className="card" style={{ width: "20rem" }} key={card._id}>
               {/* the src bellow is what gives every card that picture */}
@@ -75,17 +87,17 @@ function SavedCards({ savedCards, Username }) {
                 <h6 className={card.rarity}>{card.rarity}</h6>
                 <p className="card-text">{card.description}</p>
                 <div className="options">
-                  {username === Username ? (
-                    <div
-                      className="options"
-                      id="delete"
-                      onClick={() => onDeleteClick(card.card_id)}
-                    >
-                      <img src={tempDelete} alt="Delete" />
-                      <p>Delete Card</p>
-                    </div>
-                  ) : (
-                    <>
+                  {Username ? (
+                    username === Username ? (
+                      <div
+                        className="options"
+                        id="delete"
+                        onClick={() => onDeleteClick(card.card_id)}
+                      >
+                        <img src={tempDelete} alt="Delete" />
+                        <p>Delete Card</p>
+                      </div>
+                    ) : (
                       <div
                         className="options"
                         id="trade"
@@ -94,8 +106,8 @@ function SavedCards({ savedCards, Username }) {
                         <img src={tempTrade} alt="Trade" />
                         <p>Trade Card</p>
                       </div>
-                    </>
-                  )}
+                    )
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -107,4 +119,3 @@ function SavedCards({ savedCards, Username }) {
 }
 
 export default SavedCards;
-

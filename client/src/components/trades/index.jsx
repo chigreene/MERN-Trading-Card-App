@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import React from "react";
 import SavedCards from "../savedCards";
 import { useQuery, useMutation } from "@apollo/client";
@@ -24,7 +24,6 @@ const Trades = () => {
 
   const userTrades = data?.user?.trades || [];
 
-
   if (userTrades.length === 0) {
     return <h1>No active trades</h1>;
   }
@@ -49,30 +48,30 @@ const Trades = () => {
         <div key={trade._id} className="trade-item">
           <h3>Status: {trade.status}</h3>
 
-{username === trade.recipient.username && (
-  <div>
-    <button
-      type="button"
-      className="btn btn-success"
-      onClick={() => onClick(trade._id, 'accepted')}
-    >
-      Accept
-    </button>
-    <button
-      type="button"
-      className="btn btn-danger"
-      onClick={() => onClick(trade._id, 'rejected')}
-    >
-      Reject
-    </button>
-  </div>
-)}
+          {username === trade.recipient.username && (
+            <div>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => onClick(trade._id, "accepted")}
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => onClick(trade._id, "rejected")}
+              >
+                Reject
+              </button>
+            </div>
+          )}
 
           <Link to={`/${trade.trader.username}`}>
-          <p>Trader: {trade.trader.username}</p>
+            <p>Trader: {trade.trader.username}</p>
           </Link>
           <Link to={`/${trade.recipient.username}`}>
-         <p>Recipient: {trade.recipient.username}</p>
+            <p>Recipient: {trade.recipient.username}</p>
           </Link>
 
           <div>
