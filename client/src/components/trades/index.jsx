@@ -51,7 +51,7 @@ const Trades = () => {
         <div key={trade._id} className="trade-item">
           <h3 className={trade.status}>Status: {trade.status}</h3>
 
-          {username === trade.recipient.username && (
+          {username === trade.recipient.username ? (
             <div>
               <button
                 type="button"
@@ -68,12 +68,22 @@ const Trades = () => {
                 Reject
               </button>
             </div>
+          ) : (
+            trade.trader && (
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => onClick(trade._id, "rejected")}
+              >
+                Remove Trade
+              </button>
+            )
           )}
 
-          <Link to={`/${trade.trader.username}`}>
+          <Link className="link" to={`/${trade.trader.username}`}>
             <p>Trader: {trade.trader.username}</p>
           </Link>
-          <Link to={`/${trade.recipient.username}`}>
+          <Link className="link" to={`/${trade.recipient.username}`}>
             <p>Recipient: {trade.recipient.username}</p>
           </Link>
 

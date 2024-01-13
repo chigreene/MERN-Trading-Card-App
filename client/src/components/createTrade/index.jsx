@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../../utils/mutations";
 import { QUERY_USERS } from "../../../utils/queries";
 import Auth from "../../../utils/auth";
-function CreateTrade({recipient,requestedCard}){
-const navigate=useNavigate()
-const profile = Auth.getProfile();
+
+function CreateTrade({ recipient, requestedCard }) {
+  const navigate = useNavigate();
+  const profile = Auth.getProfile();
   const username = profile?.data?.username || "";
 
   const [formState, setFormState] = useState({
@@ -20,7 +21,7 @@ const profile = Auth.getProfile();
   console.log("Loading state: ", loading);
   console.log("Data object: ", data);
 
-  const [createTrade,{error,dataTrade}] = useMutation(CREATE_TRADE);
+  const [createTrade, { error, dataTrade }] = useMutation(CREATE_TRADE);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,40 +33,37 @@ const profile = Auth.getProfile();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-        if(!recipient || !requestedCard){
-;     const {dataTrade}=await createTrade({variables:{...formState}})
-    }else{
-        const {dataTrade}=await createTrade({
-            variables:{
-                trader:formState.trader,
-                recipient:recipient,
-                offeredCard:formState.offeredCard,
-                requestedCard:requestedCard
-            }
-        })
+    if (!recipient || !requestedCard) {
+      const { dataTrade } = await createTrade({ variables: { ...formState } });
+    } else {
+      const { dataTrade } = await createTrade({
+        variables: {
+          trader: formState.trader,
+          recipient: recipient,
+          offeredCard: formState.offeredCard,
+          requestedCard: requestedCard,
+        },
+      });
     }
-   navigate('/trade')
+    navigate("/trade");
   };
 
   // console.log("BOB123", data.users);
 
   console.log("BOB123", formState.recipient);
-return (
-            <>
-
-          <form onSubmit={handleFormSubmit}>
-            <input
-              name="trader"
-              // this where username goes
-              value={formState.trader}
-              type="text"
-              placeholder="Trader"
-            />
-            {/* <label htmlFor="recipient">Recipient:</label> */}
+  return (
+    <>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          name="trader"
+          // this where username goes
+          value={formState.trader}
+          type="text"
+          placeholder="Trader"
+        />
+        {/* <label htmlFor="recipient">Recipient:</label> */}
         {recipient ? (
-          <input
-            value={recipient}
-          />
+          <input value={recipient} />
         ) : (
           <select
             id="recipient"
@@ -88,56 +86,55 @@ return (
           </select>
         )}
 
-            {/* <label htmlFor="offeredCard">Offered Card:</label> */}
-            <select
-              id="offeredCard"
-              name="offeredCard"
-              value={formState.offeredCard}
-              onChange={handleInputChange}
-            >
-              <option value="">Select a card...</option>
-              {loading ? (
-                <option>Loading...</option>
-              ) : (
-                data?.users
-                  ?.find((user) => user.username === username)
-                  ?.savedCards.map((card) => (
-                    <option key={card._id} value={card.card_id}>
-                      {card.name}
-                    </option>
-                  ))
-              )}
-            </select>
+        {/* <label htmlFor="offeredCard">Offered Card:</label> */}
+        <select
+          id="offeredCard"
+          name="offeredCard"
+          value={formState.offeredCard}
+          onChange={handleInputChange}
+        >
+          <option value="">Select a card...</option>
+          {loading ? (
+            <option>Loading...</option>
+          ) : (
+            data?.users
+              ?.find((user) => user.username === username)
+              ?.savedCards.map((card) => (
+                <option key={card._id} value={card.card_id}>
+                  {card.name}
+                </option>
+              ))
+          )}
+        </select>
 
-            {/* <label htmlFor="requestedCard">Requested Card:</label> */}
-            {requestedCard?(
-            <input value={requestedCard}></input>
-            ):(
-            <select
-              id="requestedCard"
-              name="requestedCard"
-              value={formState.requestedCard}
-              onChange={handleInputChange}
-            >
-              <option value="">Select a card...</option>
-              {loading ? (
-                <option>Loading...</option>
-              ) : (
-                data?.users
-                  ?.find((user) => user.username === formState.recipient)
-                  ?.savedCards.map((card) => (
-                    <option key={card._id} value={card.card_id}>
-                      {card.name}
-                    </option>
-                  ))
-              )}
-            </select>
+        {/* <label htmlFor="requestedCard">Requested Card:</label> */}
+        {requestedCard ? (
+          <input value={requestedCard}></input>
+        ) : (
+          <select
+            id="requestedCard"
+            name="requestedCard"
+            value={formState.requestedCard}
+            onChange={handleInputChange}
+          >
+            <option value="">Select a card...</option>
+            {loading ? (
+              <option>Loading...</option>
+            ) : (
+              data?.users
+                ?.find((user) => user.username === formState.recipient)
+                ?.savedCards.map((card) => (
+                  <option key={card._id} value={card.card_id}>
+                    {card.name}
+                  </option>
+                ))
             )}
+          </select>
+        )}
 
-
-            <button type="submit">Submit</button>
-          </form>
-        </>
-)
+        <button type="submit">Submit</button>
+      </form>
+    </>
+  );
 }
-export default CreateTrade
+export default CreateTrade;

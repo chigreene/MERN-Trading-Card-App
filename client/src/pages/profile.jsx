@@ -8,6 +8,9 @@ import { QUERY_USER } from "../../utils/queries";
 import "./profile.css";
 
 function ProfilePage() {
+  const profile = Auth.getProfile();
+  const username = profile?.data?.username;
+
   const { username: userParam } = useParams();
 
   const { loading, data } = useQuery(userParam ? QUERY_USER : Query_ME, {
@@ -32,7 +35,10 @@ function ProfilePage() {
     <div className="container">
       <section id="profile">
         <h1>Hello {user.username}</h1>
-        <SavedCards savedCards={user.savedCards}></SavedCards>
+        <SavedCards
+          savedCards={user.savedCards}
+          Username={username}
+        ></SavedCards>
       </section>
     </div>
   );
