@@ -37,12 +37,11 @@ function ProfilePage() {
   if (!user || !user.username) {
     return <h1>Must Be Logged In</h1>;
   }
-  console.log(user.savedCards)
-  console.log(compareCardsIds)
   return (
     <div className="container">
       <section id="profile">
         <h1>Hello {user.username}</h1>
+        <button>Compare With Inventory</button>
         <SavedCards
           savedCards={user.savedCards}
           Username={username}

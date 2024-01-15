@@ -89,11 +89,11 @@ const Trades = () => {
 
           <div>
             <strong>Offered Cards:</strong>
-            <SavedCards savedCards={trade.offeredCard} />
+            <SavedCards savedCards={trade.offeredCard} compare={[]} />
           </div>
           <div>
             <strong>Requested Cards:</strong>
-            <SavedCards savedCards={trade.requestedCard} />
+            <SavedCards savedCards={trade.requestedCard} compare={[]}  />
           </div>
         </div>
       ))}
