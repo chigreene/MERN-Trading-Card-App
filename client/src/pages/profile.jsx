@@ -21,52 +21,15 @@ function ProfilePage() {
     variables:{logged:username,username:userParam}
   })
 
-  const [showCompare,setCompare]=useState(false)
-  const onCompareClick=()=>{
-    setCompare(!showCompare)
-  }
-
-const RenderCompare = () => {
-  const comparedCards=dataCompare?.compareCards || {}
-  if (showCompare) {
-    if(!userParam){
-    return(
-<table>
-    <thead>
-      <tr>
-        <th>Card ID</th>
-        <th>Rarity</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-        comparedCards.map((card)=>(
-          <tr>
-            <td>{card.card_id}</td>
-            <td>{card.rarity}</td>
-            <td>{card.name}</td>
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
-    )
-  }else{
-     return <SavedCards savedCards={comparedCards}></SavedCards>;
-  }
-  }
-
- 
-  return null; // It's good practice to return null if the condition is not met
-};
-
   const user = data?.me || data?.user || {};
+  //Changing the cards brightness lower
+  const compareCards=dataCompare?.compareCards || {}
+  const compareCardsIds = Array.isArray(compareCards) ? compareCards.map(card => card.card_id) : [];
+
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Navigate to="/me" />;
   }
 
-  // Check if user object is empty or username is not present
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -74,18 +37,18 @@ const RenderCompare = () => {
   if (!user || !user.username) {
     return <h1>Must Be Logged In</h1>;
   }
-
+  console.log(user.savedCards)
+  console.log(compareCardsIds)
   return (
     <div className="container">
       <section id="profile">
         <h1>Hello {user.username}</h1>
-        <button onClick={()=>{setCompare(!showCompare)}}>Compare Cards</button>
         <SavedCards
           savedCards={user.savedCards}
           Username={username}
+          compare={compareCardsIds}
         ></SavedCards>
       </section>
-          {RenderCompare()}
     </div>
 
   );

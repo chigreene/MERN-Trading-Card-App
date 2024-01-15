@@ -10,7 +10,7 @@ import tempDelete from "../../assets/tempDeleteIcon.png";
 import tempTrade from "../../assets/tempTrade.png";
 import CreateTrade from "../createTrade";
 
-function SavedCards({ savedCards, Username }) {
+function SavedCards({ savedCards, Username,compare }) {
   const [selectCard, setSelect] = useState(null);
 
   // Getting the username so the mutation can work
@@ -45,6 +45,8 @@ function SavedCards({ savedCards, Username }) {
     return <h1>No saved Cards Yet</h1>;
   }
 
+
+
   return (
     <>
       <div className="card-container">
@@ -77,10 +79,19 @@ function SavedCards({ savedCards, Username }) {
           </>
         ) : (
           savedCards.map((card) => (
-            <div className="card" style={{ width: "20rem" }} key={card._id}>
+            
+     <div
+    className="card"
+    style={{
+      width: "20rem",
+      filter: compare.includes(card.card_id) ? "brightness(50%)" : "brightness(100%)",
+    }}
+    key={card._id}
+    id={card.card_id}
+  >
               {/* the src bellow is what gives every card that picture */}
               <img className="card-img-top" src={Card1} alt="Card image cap" />
-              <div className="card-body">
+              <div className="card-body" >
                 <h5 className="card-title">
                   # {card.card_id} {card.name}
                 </h5>

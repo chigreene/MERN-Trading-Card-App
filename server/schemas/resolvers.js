@@ -103,8 +103,8 @@ const resolvers = {
         if(username){
           const searchedUser=await User.findOne({username}).populate("savedCards")
           const searchedUserCards=searchedUser.savedCards.map(card=>card.card_id)
-          searchedUserCards.filter(card=>card!==loggedInUserCards)
-          return Card.find({card_id:{$in:searchedUserCards.filter(card=>card!==loggedInUserCards)}})
+          const filteredCardIds=searchedUserCards.filter(cardId=>!loggedInUserCards.includes(cardId))
+          return Card.find({card_id:{$in:filteredCardIds}})
         }
         else{
   const allCards = await Card.find({});
