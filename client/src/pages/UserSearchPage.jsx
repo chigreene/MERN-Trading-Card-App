@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { QUERY_USERS, QUERY_USER } from "../../utils/queries";
-import SavedCards from "../components/savedCards";
+import { Link } from "react-router-dom";
 import Auth from "../../utils/auth";
 import "./UserSearchPage.css";
 
@@ -84,43 +84,23 @@ const UserSearchPage = () => {
           {data.users
             .filter((user) => user.username !== username)
             .map((user) => (
+    
               <tr
                 className="userRow"
                 key={user._id}
                 onClick={() => handleUserClick(user)}
               >
-                <td>{user.username}</td>
+                <td>
+                       <Link to={`/${user.username}`}>     {user.username}              </Link>
+                  </td>
                 <td>{user.email}</td>
               </tr>
+ 
             ))}
         </tbody>
       </table>
 
-      {!isSearchActive && selectedUser && (
-        <div>
-          <h2>{selectedUser.username}'s Cards</h2>
-          <SavedCards
-            savedCards={selectedUser.savedCards}
-            Username={selectedUser.username}
-          ></SavedCards>
-        </div>
-      )}
 
-      {isSearchActive && (
-        <div>
-          {userData && userData.user ? (
-            <>
-              <h2>{userData.user.username}'s Cards</h2>
-              <SavedCards
-                savedCards={userData.user.savedCards}
-                Username={userData.user.username}
-              ></SavedCards>
-            </>
-          ) : (
-            <h2>User not found</h2>
-          )}
-        </div>
-      )}
     </div>
   );
 };
