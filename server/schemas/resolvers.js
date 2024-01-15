@@ -91,6 +91,31 @@ const resolvers = {
         .populate("offeredCard")
         .populate("requestedCard");
     },
+        compareCards:async(parent,{logged,username},context)=>{
+      /* meant to do two things compare :
+      1)the logged in user with another user
+      2) logged in user with the database
+        if the username parameter is provided it will compare with another user
+        else if the username parameter is falsy the comparison with be between all the cards (the database)
+      */
+       const loggedInUser=await User.findOne({username:logged||context.user.username }).populate("savedCards");
+     const loggedInUserCards=loggedInUser.savedCards.map(card=>card.card_id)
+
+     
+
+        if(username){
+          const searchedUser=await User.findOne({username}).populate("savedCards")
+          const searchedUserCards=searchedUser.savedCards.map(card=>card.card_id)
+          searchedUserCards.filter(card=>card!==loggedInUserCards)
+          return Card.find({card_id:{$in:searchedUserCards.filter(card=>card!==loggedInUserCards)}})
+        }
+        
+        else{
+          const allCards=await Card.find({})
+          const allCardIds=allCards.map(card=>card.card_id)
+          return Card.find({ card_id: { $in:allCardIds.filter(card=>card!==loggedInUserCards.includes(card)) } });
+        }
+    },
   },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
@@ -267,6 +292,7 @@ const resolvers = {
         return populatedTrade;
       }
     },
+
   },
 };
 
