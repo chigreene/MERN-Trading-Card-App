@@ -1,13 +1,16 @@
-import { Link } from "react-router-dom";
-import "./nav.css";
+import { Link,useNavigate} from "react-router-dom";
+import './nav.css';
 import Auth from "../../utils/auth";
 
 function Nav() {
+  const navigate=useNavigate()
   // Logout User
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
+    navigate('/')
   };
+
 
   return (
     <nav>
