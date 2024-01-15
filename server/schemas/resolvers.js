@@ -98,22 +98,19 @@ const resolvers = {
         if the username parameter is provided it will compare with another user
         else if the username parameter is falsy the comparison with be between all the cards (the database)
       */
-       const loggedInUser=await User.findOne({username:logged||context.user.username }).populate("savedCards");
+       const loggedInUser=await User.findOne({username:logged }).populate("savedCards");
      const loggedInUserCards=loggedInUser.savedCards.map(card=>card.card_id)
-
-     
-
         if(username){
           const searchedUser=await User.findOne({username}).populate("savedCards")
           const searchedUserCards=searchedUser.savedCards.map(card=>card.card_id)
           searchedUserCards.filter(card=>card!==loggedInUserCards)
           return Card.find({card_id:{$in:searchedUserCards.filter(card=>card!==loggedInUserCards)}})
         }
-        
         else{
-          const allCards=await Card.find({})
-          const allCardIds=allCards.map(card=>card.card_id)
-          return Card.find({ card_id: { $in:allCardIds.filter(card=>card!==loggedInUserCards.includes(card)) } });
+  const allCards = await Card.find({});
+  const allCardIds = allCards.map(card => card.card_id);
+  const filteredCardIds = allCardIds.filter(cardId => !loggedInUserCards.includes(cardId));
+  return Card.find({ card_id: { $in: filteredCardIds } });
         }
     },
   },
