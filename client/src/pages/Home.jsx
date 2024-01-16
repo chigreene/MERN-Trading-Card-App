@@ -129,7 +129,24 @@ const Home = () => {
           )}
         </div>
       ) : (
-        <h1>Must be logged in</h1>
+        <div>
+          <h1>Must be logged in</h1>
+          <div className="about">
+            <h2>About</h2>
+            <p>
+              Welcome to out trading card game. Our website allows you to
+              collect and trade unique cards with other users on the platform.
+              The first step is to create an account. Once you have created the
+              account you will be able to open packs of cards and decide if you
+              want to collect the card or discard it. Pretty simple, right? In
+              the trading page you can propose trades with other users. By using
+              the search user page you can view which users have which cards so
+              you can plan your trades. Finally you can track your journey to
+              collect all the cards in the profile page. We hope you enjoy
+              collecting and trading our cards!
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );

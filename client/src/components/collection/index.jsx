@@ -126,6 +126,16 @@ function Collection({ compare }) {
       <div key={resetView}>
         {view ? (
           <>
+            <div className="color-key">
+              <div className="color-key-item">
+                <div className="dont-own"></div>
+                <div>Don't own the card</div>
+              </div>
+              <div className="color-key-item">
+                <div className="own"></div>
+                <div>Own the card</div>
+              </div>
+            </div>
             <table>
               <thead>
                 <tr>
@@ -148,7 +158,7 @@ function Collection({ compare }) {
                         // can be style better ofc
                         backgroundColor: compareIds.includes(card.card_id)
                           ? "yellow"
-                          : "none",
+                          : "lightyellow",
                       }}
                     >
                       <td>{card.card_id}</td>
