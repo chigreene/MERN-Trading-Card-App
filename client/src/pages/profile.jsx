@@ -16,23 +16,24 @@ function ProfilePage() {
     variables: { username: userParam },
   }); // getting the other users information based on the parameter provided in the url
 
-  const { loading: loadingCompare, data: dataCompare } = useQuery(COMPARE_CARDS, {
-    variables: { logged: username, username: userParam },
-  });
-//using the query in the resolver to compare the logged in the user (logged parameter) with the other user (username parameter) 
-
+  const { loading: loadingCompare, data: dataCompare } = useQuery(
+    COMPARE_CARDS,
+    {
+      variables: { logged: username, username: userParam },
+    }
+  );
+  //using the query in the resolver to compare the logged in the user (logged parameter) with the other user (username parameter)
 
   const user = data?.me || data?.user || {}; // getting back info either from the query me or query user
-  const [showCompare, setCompare] = useState(false); // state to control rendering of the collect(pokedex) 
+  const [showCompare, setCompare] = useState(false); // state to control rendering of the collect(pokedex)
 
   const compareCards = dataCompare?.compareCards || []; //getting back cards
 
-
   const onCompareClick = () => {
     setCompare(!showCompare);
-  };// chanign the state
+  }; // chanign the state
 
-// use that youtube short method to render the compare table
+  // use that youtube short method to render the compare table
   const renderCompare = () => {
     if (showCompare) {
       return <Collection compare={compareCards} />;
@@ -40,18 +41,18 @@ function ProfilePage() {
       return null;
     }
   };
-// if you're logged in go to /me page (profile)
+  // if you're logged in go to /me page (profile)
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Navigate to="/me" />;
   }
 
   if (loading) {
     return <div>Loading...</div>;
-  }// if loading user data loading div
+  } // if loading user data loading div
 
   if (!user || !user.username) {
     return <h1>Must Be Logged In</h1>;
-  }// must be logged in 
+  } // must be logged in
 
   return (
     <div className="container">
@@ -67,17 +68,20 @@ function ProfilePage() {
           <>
             {!userParam ? ( // if you no userparam is provided ( meaning you're on your own profile you can compare your cards with ALL cards)
               <>
-                <button onClick={onCompareClick}>Compare Cards With Inventory</button>
+                <button onClick={onCompareClick}>
+                  Compare Cards With Inventory
+                </button>
                 <SavedCards
                   savedCards={user.savedCards}
-                  Username={username}
+                  cardOwner={user.username}
                   compare={compareCards}
                 />
               </>
-            ) : (// if on anothers page you cant do that
+            ) : (
+              // if on anothers page you cant do that
               <SavedCards
                 savedCards={user.savedCards}
-                Username={username}
+                cardOwner={user.username}
                 compare={compareCards}
               />
             )}

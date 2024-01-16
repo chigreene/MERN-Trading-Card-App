@@ -10,9 +10,11 @@ import tempDelete from "../../assets/tempDeleteIcon.png";
 import tempTrade from "../../assets/tempTrade.png";
 import CreateTrade from "../createTrade";
 
-function SavedCards({ savedCards, Username,compare }) {
+function SavedCards({ savedCards, cardOwner, compare }) {
   const [selectCard, setSelect] = useState(null);
- const compareIds= Array.isArray(compare) ? compare.map((card) => card.card_id) : []; // mapping the ids
+  const compareIds = Array.isArray(compare)
+    ? compare.map((card) => card.card_id)
+    : []; // mapping the ids
   // Getting the username so the mutation can work
   const profile = Auth.getProfile();
   const username = profile.data.username;
@@ -70,17 +72,23 @@ function SavedCards({ savedCards, Username,compare }) {
                 <p className="card-text">{selectCard.description}</p>
               </div>
               <CreateTrade
-                recipient={Username}
+                recipient={cardOwner}
                 requestedCard={selectCard.card_id}
               ></CreateTrade>
             </div>
           </>
         ) : (
           savedCards.map((card) => (
-            <div className="card" style={{
-      width: "20rem",
-      filter: compareIds.includes(card.card_id) ? "brightness(50%)" : "brightness(100%)",
-    }} key={card._id}>
+            <div
+              className="card"
+              style={{
+                width: "20rem",
+                filter: compareIds.includes(card.card_id)
+                  ? "brightness(50%)"
+                  : "brightness(100%)",
+              }}
+              key={card._id}
+            >
               {/* the src bellow is what gives every card that picture */}
               <img className="card-img-top" src={Card1} alt="Card image cap" />
               <div className="card-body">
@@ -90,8 +98,8 @@ function SavedCards({ savedCards, Username,compare }) {
                 <h6 className={card.rarity}>{card.rarity}</h6>
                 <p className="card-text">{card.description}</p>
                 <div className="options">
-                  {Username ? (
-                    username === Username ? (
+                  {cardOwner ? (
+                    username === cardOwner ? (
                       <div
                         className="options"
                         id="delete"
