@@ -83,43 +83,52 @@ function SavedCards({ savedCards, cardOwner, compare }) {
               className="card"
               style={{
                 width: "20rem",
-                filter: compareIds.includes(card.card_id)
-                  ? "brightness(50%)"
-                  : "brightness(100%)",
               }}
               key={card._id}
             >
               {/* the src bellow is what gives every card that picture */}
-              <img className="card-img-top" src={Card1} alt="Card image cap" />
-              <div className="card-body">
-                <h5 className="card-title">
-                  # {card.card_id} {card.name}
-                </h5>
-                <h6 className={card.rarity}>{card.rarity}</h6>
-                <p className="card-text">{card.description}</p>
-                <div className="options">
-                  {cardOwner ? (
-                    username === cardOwner ? (
-                      <div
-                        className="options"
-                        id="delete"
-                        onClick={() => onDeleteClick(card.card_id)}
-                      >
-                        <img src={tempDelete} alt="Delete" />
-                        <p>Delete Card</p>
-                      </div>
-                    ) : (
-                      <div
-                        className="options"
-                        id="trade"
-                        onClick={() => onTradeClick(card)}
-                      >
-                        <img src={tempTrade} alt="Trade" />
-                        <p>Trade Card</p>
-                      </div>
-                    )
-                  ) : null}
+              <div>
+                <img
+                  className="card-img-top"
+                  src={Card1}
+                  alt="Card image cap"
+                  style={{
+                    filter: compareIds.includes(card.card_id)
+                      ? "brightness(50%)"
+                      : "brightness(100%)",
+                  }}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">
+                    # {card.card_id} {card.name}
+                  </h5>
+                  <h6 className={card.rarity}>{card.rarity}</h6>
+                  <p className="card-text">{card.description}</p>
                 </div>
+              </div>
+              <div className="options">
+                {cardOwner ? (
+                  username === cardOwner ? (
+                    <div
+                      className="options"
+                      id="delete"
+                      onClick={() => onDeleteClick(card.card_id)}
+                    >
+                      <img src={tempDelete} alt="Delete" />
+                      <p>Delete Card</p>
+                    </div>
+                  ) : (
+                    <div
+                      className="options"
+                      id="trade"
+                      style={{ filter: "brightness(100%)" }}
+                      onClick={() => onTradeClick(card)}
+                    >
+                      <img src={tempTrade} alt="Trade" />
+                      <p>Trade Card</p>
+                    </div>
+                  )
+                ) : null}
               </div>
             </div>
           ))

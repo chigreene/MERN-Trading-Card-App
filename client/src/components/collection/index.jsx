@@ -129,11 +129,11 @@ function Collection({ compare }) {
             <div className="color-key">
               <div className="color-key-item">
                 <div className="dont-own"></div>
-                <div>Don't own the card</div>
+                <div>You don't own the card</div>
               </div>
               <div className="color-key-item">
                 <div className="own"></div>
-                <div>Own the card</div>
+                <div>You own this card</div>
               </div>
             </div>
             <table>
@@ -177,6 +177,16 @@ function Collection({ compare }) {
         ) : (
           <>
             {/* saveCards now has props for compare which does the same thing as mentioned above  */}
+            <div className="color-key">
+              <div className="color-key-item">
+                <div className="cardViewDont-own"></div>
+                <div>You don't own the card</div>
+              </div>
+              <div className="color-key-item">
+                <div className="cardViewOwn"></div>
+                <div>You own this card</div>
+              </div>
+            </div>
             <SavedCards
               savedCards={currentCards}
               compare={compare}

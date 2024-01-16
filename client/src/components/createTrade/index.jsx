@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_TRADE } from "../../../utils/mutations";
 import { QUERY_USERS } from "../../../utils/queries";
 import Auth from "../../../utils/auth";
+import "./style.css";
 
 function CreateTrade({ recipient, requestedCard }) {
   const navigate = useNavigate();
@@ -48,20 +49,16 @@ function CreateTrade({ recipient, requestedCard }) {
     navigate("/trade");
   };
 
-  // console.log("BOB123", data.users);
-
-  console.log("BOB123", formState.recipient);
   return (
-    <>
+    <div>
       <form onSubmit={handleFormSubmit}>
         <input
           name="trader"
-          // this where username goes
           value={formState.trader}
           type="text"
           placeholder="Trader"
         />
-        {/* <label htmlFor="recipient">Recipient:</label> */}
+        <label htmlFor="recipient">Recipient:</label>
         {recipient ? (
           <input value={recipient} />
         ) : (
@@ -86,14 +83,14 @@ function CreateTrade({ recipient, requestedCard }) {
           </select>
         )}
 
-        {/* <label htmlFor="offeredCard">Offered Card:</label> */}
+        <label htmlFor="offeredCard">Offered Card:</label>
         <select
           id="offeredCard"
           name="offeredCard"
           value={formState.offeredCard}
           onChange={handleInputChange}
         >
-          <option value="">Select a card...</option>
+          <option value="">Select a card to offer...</option>
           {loading ? (
             <option>Loading...</option>
           ) : (
@@ -107,7 +104,7 @@ function CreateTrade({ recipient, requestedCard }) {
           )}
         </select>
 
-        {/* <label htmlFor="requestedCard">Requested Card:</label> */}
+        <label htmlFor="requestedCard">Requested Card:</label>
         {requestedCard ? (
           <input value={requestedCard}></input>
         ) : (
@@ -117,7 +114,7 @@ function CreateTrade({ recipient, requestedCard }) {
             value={formState.requestedCard}
             onChange={handleInputChange}
           >
-            <option value="">Select a card...</option>
+            <option value="">Select a card to request...</option>
             {loading ? (
               <option>Loading...</option>
             ) : (
@@ -134,7 +131,7 @@ function CreateTrade({ recipient, requestedCard }) {
 
         <button type="submit">Submit</button>
       </form>
-    </>
+    </div>
   );
 }
 export default CreateTrade;

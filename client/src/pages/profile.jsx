@@ -57,18 +57,32 @@ function ProfilePage() {
   return (
     <div className="container">
       <section id="profile">
-        <h1>Hello {user.username}</h1>
+        <h1>
+          {username === user.username
+            ? `Hello ${username}!`
+            : `Welcome to ${user.username}'s page`}
+        </h1>
+
+        <div className="color-explanation">
+          <p>
+            {username === user.username
+              ? `These are the cards you have collected`
+              : `Greyed out cards indicate you have not collected that card yet.`}
+          </p>
+        </div>
 
         {showCompare ? ( //renders compare table if showcompare is true and a cancel button
-          <>
-            <button onClick={() => setCompare(false)}>Return</button>
+          <div className="inventoryContainer">
+            <button className="inventoryBtn" onClick={() => setCompare(false)}>
+              Return
+            </button>
             {renderCompare()}
-          </>
+          </div>
         ) : (
-          <>
+          <div className="inventoryContainer">
             {!userParam ? ( // if you no userparam is provided ( meaning you're on your own profile you can compare your cards with ALL cards)
               <>
-                <button onClick={onCompareClick}>
+                <button className="inventoryBtn" onClick={onCompareClick}>
                   Compare Cards With Inventory
                 </button>
                 <SavedCards
@@ -85,7 +99,7 @@ function ProfilePage() {
                 compare={compareCards}
               />
             )}
-          </>
+          </div>
         )}
       </section>
     </div>
