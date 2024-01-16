@@ -6,18 +6,19 @@ import SavedCards from "../savedCards";
 function Collection({compare}) {
 const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
 });
-
+// query for all cards
  
-  const allCards=dataCards?.cards||{}
+  const allCards=dataCards?.cards||{} // getting back data
   console.log(allCards)
   const allCardIds=Array.isArray(allCards)?allCards.map(card=>card.card_id):[]
    const[currentCards,setCards]=useState(allCards)
    console.log(currentCards)
+   //setting up state
   const [sortName,setSortName]=useState('asc')
   const [sortRarity,setSortRarity]=useState('asc')
   const [sortNumber,setSortNumber]=useState('asc')
   const [view,setView]=useState(true)
-
+// have to use useeffect to set the state because allCards will always be falsy({}) when i try to set the default value of the state currentCards
     useEffect(() => {
     // Update currentCards when dataCards changes
     setCards(allCards);
@@ -27,7 +28,11 @@ if(loadingCards){
     <p>loading...</p>
   )
 }
+//if loading return loading...
 
+//next three functions 
+  //sorting algo
+    // set the state so it redeners pretty musch same for all other functions
 const onSortNameClick=()=>{
     const sortedCards = [...allCards].sort((a, b) => {
       const nameA = a.name.toLowerCase();
@@ -82,12 +87,14 @@ const onSortRarityClick = () => {
     setSortNumber(null);
   };
 
+  // change view from tabel to a sort of book view
   const onViewClick=()=>{
     setView(!view)
   }
 return (
     <>
             <div>
+              {/* event listen for the functions  */}
             <button onClick={(onViewClick)}>View</button>
         <button onClick={onSortNumberClick}>Card ID</button>
         <button onClick={onSortRarityClick}>Rarity</button>
@@ -104,10 +111,15 @@ return (
       </tr>
     </thead>
     <tbody>
+      {/* if i dont use the array object to check if it an array i get a .map is not a method error */}
       {Array.isArray(currentCards) && currentCards.length > 0 ? (
         currentCards.map((card, index) => (
           <tr key={index} 
             style={{
+              //compare parameter can be found in the props and takes in an array of ids  if you check savedCards component each card now has its own id
+              // cards with an id that includes compare with have a yellow background 
+              //the parameter that is passed in is coming from the query that i created today so it will return cards that the user doesnt own
+              // can be style better ofc
               backgroundColor: compare.includes(card.card_id) ? "yellow" : "none",
             }}
           >
@@ -126,7 +138,8 @@ return (
    </> 
 ):(
 <>
-<SavedCards savedCards={currentCards} compare={compare}></SavedCards>
+{/* saveCards now has props for compare which does the same thing as mentioned above  */}
+<SavedCards savedCards={currentCards} compare={compare}></SavedCards> 
 </>
 )}
 
