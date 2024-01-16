@@ -26,7 +26,7 @@ function ProfilePage() {
   const [showCompare, setCompare] = useState(false); // state to control rendering of the collect(pokedex) 
 
   const compareCards = dataCompare?.compareCards || []; //getting back cards
-  const compareCardsIds = Array.isArray(compareCards) ? compareCards.map((card) => card.card_id) : []; // mapping the ids
+
 
   const onCompareClick = () => {
     setCompare(!showCompare);
@@ -35,7 +35,7 @@ function ProfilePage() {
 // use that youtube short method to render the compare table
   const renderCompare = () => {
     if (showCompare) {
-      return <Collection compare={compareCardsIds} />;
+      return <Collection compare={compareCards} />;
     } else {
       return null;
     }
@@ -71,14 +71,14 @@ function ProfilePage() {
                 <SavedCards
                   savedCards={user.savedCards}
                   Username={username}
-                  compare={compareCardsIds}
+                  compare={compareCards}
                 />
               </>
             ) : (// if on anothers page you cant do that
               <SavedCards
                 savedCards={user.savedCards}
                 Username={username}
-                compare={compareCardsIds}
+                compare={compareCards}
               />
             )}
           </>

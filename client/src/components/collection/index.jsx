@@ -6,6 +6,9 @@ import SavedCards from "../savedCards";
 function Collection({compare}) {
 const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
 });
+const compareIds= Array.isArray(compare) ? compare.map((card) => card.card_id) : []; // mapping the ids
+// the reason i moved this line from prfoile and move it into the acutal component (in saveCards too) is because instead onlyhaving acess to the id i now have the entire object which means i can 
+// sort by cards not owned bascially used did to add another quick feature//
 // query for all cards
  
   const allCards=dataCards?.cards||{} // getting back data
@@ -17,6 +20,7 @@ const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
   const [sortName,setSortName]=useState('asc')
   const [sortRarity,setSortRarity]=useState('asc')
   const [sortNumber,setSortNumber]=useState('asc')
+  const [sortNot,setNot]=useState(false)
   const [view,setView]=useState(true)
 // have to use useeffect to set the state because allCards will always be falsy({}) when i try to set the default value of the state currentCards
     useEffect(() => {
@@ -87,6 +91,10 @@ const onSortRarityClick = () => {
     setSortNumber(null);
   };
 
+const onSortNotOwnedClick=()=>{
+setCards(compare)
+setNot(!sortNot)
+}
   // change view from tabel to a sort of book view
   const onViewClick=()=>{
     setView(!view)
@@ -95,10 +103,12 @@ return (
     <>
             <div>
               {/* event listen for the functions  */}
-            <button onClick={(onViewClick)}>View</button>
+        <button onClick={(onViewClick)}>View</button>
         <button onClick={onSortNumberClick}>Card ID</button>
         <button onClick={onSortRarityClick}>Rarity</button>
         <button onClick={onSortNameClick}>Name</button>
+        <button onClick={onSortNotOwnedClick}>Not Owned</button>
+        <button onClick={()=>{setCards(allCards)}}>Reset</button>
         </div>
 {view?(
    <>
@@ -112,7 +122,9 @@ return (
     </thead>
     <tbody>
       {/* if i dont use the array object to check if it an array i get a .map is not a method error */}
-      {Array.isArray(currentCards) && currentCards.length > 0 ? (
+      
+      {
+      Array.isArray(currentCards) && currentCards.length > 0 ? (
         currentCards.map((card, index) => (
           <tr key={index} 
             style={{
@@ -120,7 +132,7 @@ return (
               // cards with an id that includes compare with have a yellow background 
               //the parameter that is passed in is coming from the query that i created today so it will return cards that the user doesnt own
               // can be style better ofc
-              backgroundColor: compare.includes(card.card_id) ? "yellow" : "none",
+              backgroundColor: compareIds.includes(card.card_id) ? "yellow" : "none",
             }}
           >
             <td>{card.card_id}</td>

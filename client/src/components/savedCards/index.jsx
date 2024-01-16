@@ -12,7 +12,7 @@ import CreateTrade from "../createTrade";
 
 function SavedCards({ savedCards, Username,compare }) {
   const [selectCard, setSelect] = useState(null);
-
+ const compareIds= Array.isArray(compare) ? compare.map((card) => card.card_id) : []; // mapping the ids
   // Getting the username so the mutation can work
   const profile = Auth.getProfile();
   const username = profile.data.username;
@@ -79,7 +79,7 @@ function SavedCards({ savedCards, Username,compare }) {
           savedCards.map((card) => (
             <div className="card" style={{
       width: "20rem",
-      filter: compare.includes(card.card_id) ? "brightness(50%)" : "brightness(100%)",
+      filter: compareIds.includes(card.card_id) ? "brightness(50%)" : "brightness(100%)",
     }} key={card._id}>
               {/* the src bellow is what gives every card that picture */}
               <img className="card-img-top" src={Card1} alt="Card image cap" />
