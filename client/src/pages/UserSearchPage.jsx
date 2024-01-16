@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { QUERY_USERS, QUERY_USER } from "../../utils/queries";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Auth from "../../utils/auth";
 import "./UserSearchPage.css";
 
@@ -14,6 +15,8 @@ const UserSearchPage = () => {
   const [searchParams, setSearchParams] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+
+  const navigate = useNavigate();
 
   const { loading, data } = useQuery(QUERY_USERS);
   const { loading: loadingUser, data: userData } = useQuery(QUERY_USER, {
@@ -50,6 +53,7 @@ const UserSearchPage = () => {
     event.preventDefault();
     setSearchParams(searchTerm);
     setIsSearchActive(true);
+    navigate(`/${searchTerm}`);
   };
 
   console.log("Search input", searchParams);
@@ -84,23 +88,19 @@ const UserSearchPage = () => {
           {data.users
             .filter((user) => user.username !== username)
             .map((user) => (
-    
               <tr
                 className="userRow"
                 key={user._id}
                 onClick={() => handleUserClick(user)}
               >
                 <td>
-                       <Link to={`/${user.username}`}>     {user.username}              </Link>
-                  </td>
+                  <Link to={`/${user.username}`}> {user.username} </Link>
+                </td>
                 <td>{user.email}</td>
               </tr>
- 
             ))}
         </tbody>
       </table>
-
-
     </div>
   );
 };
