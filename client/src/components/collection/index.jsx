@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { QUERY_CARDS } from "../../../utils/queries";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import SavedCards from "../savedCards";
 
 function Collection({compare}) {
@@ -9,16 +9,24 @@ const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
 
  
   const allCards=dataCards?.cards||{}
+  console.log(allCards)
   const allCardIds=Array.isArray(allCards)?allCards.map(card=>card.card_id):[]
-
    const[currentCards,setCards]=useState(allCards)
+   console.log(currentCards)
   const [sortName,setSortName]=useState('asc')
   const [sortRarity,setSortRarity]=useState('asc')
   const [sortNumber,setSortNumber]=useState('asc')
-
   const [view,setView]=useState(true)
 
-
+    useEffect(() => {
+    // Update currentCards when dataCards changes
+    setCards(allCards);
+  }, [allCards]);
+if(loadingCards){
+  return(
+    <p>loading...</p>
+  )
+}
 
 const onSortNameClick=()=>{
     const sortedCards = [...allCards].sort((a, b) => {
@@ -96,7 +104,7 @@ return (
       </tr>
     </thead>
     <tbody>
-      {Array.isArray(allCards) && allCards.length > 0 ? (
+      {Array.isArray(currentCards) && currentCards.length > 0 ? (
         currentCards.map((card, index) => (
           <tr key={index} 
             style={{

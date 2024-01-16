@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import Collection from "../components/collection";
 import Auth from "../../utils/auth";
 import SavedCards from "../components/savedCards";
-import { QUERY_USER,COMPARE_CARDS,Query_ME,QUERY_CARDS } from "../../utils/queries";
+import { QUERY_USER,COMPARE_CARDS,Query_ME } from "../../utils/queries";
 import { useState } from "react";
 import "./profile.css";
 
@@ -20,7 +20,7 @@ function ProfilePage() {
     variables:{logged:username,username:userParam}
   })
 
-  const {loading:loadingCards,data:dataCards}=useQuery(QUERY_CARDS)
+
   const user = data?.me || data?.user || {};
   
   const [showCompare,setCompare]=useState(false)
