@@ -5,9 +5,6 @@ import SavedCards from "../savedCards";
 
 function Collection({compare}) {
 const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
-  variables: {
-    limit: 10, // Specify the number of items you want to retrieve
-  },
 });
 
  
@@ -16,7 +13,7 @@ const { loading: loadingCards, data: dataCards } = useQuery(QUERY_CARDS, {
 
    const[currentCards,setCards]=useState(allCards)
   const [sortName,setSortName]=useState('asc')
-  const [sortRarity,setSortRairty]=useState('asc')
+  const [sortRarity,setSortRarity]=useState('asc')
   const [sortNumber,setSortNumber]=useState('asc')
 
   const [view,setView]=useState(true)
@@ -36,7 +33,7 @@ const onSortNameClick=()=>{
     });
     setCards(sortedCards)
     setSortName(sortName === 'asc' ? 'desc' : 'asc');
-    setSortRairty(null);
+    setSortRarity(null);
     setSortNumber(null); 
 
 }
@@ -56,7 +53,25 @@ const onSortNumberClick = () => {
     setCards(sortedCards)
     setSortNumber(sortNumber === 'asc' ? 'desc' : 'asc');
     setSortName(null);
-    setSortRairty(null);
+    setSortRarity(null);
+  };
+
+const onSortRarityClick = () => {
+    const sortedCards = [...allCards].sort((a, b) => {
+      const rarityOrder = ['common', 'uncommon', 'rare', 'legendary'];
+      const rarityA = rarityOrder.indexOf(a.rarity);
+      const rarityB = rarityOrder.indexOf(b.rarity);
+
+      if (sortRarity === 'asc') {
+        return rarityA - rarityB;
+      } else {
+        return rarityB - rarityA;
+      }
+    });
+    setCards(sortedCards);
+    setSortRarity(sortRarity === 'asc' ? 'desc' : 'asc');
+    setSortName(null);
+    setSortNumber(null);
   };
 
   const onViewClick=()=>{
@@ -67,7 +82,7 @@ return (
             <div>
             <button onClick={(onViewClick)}>View</button>
         <button onClick={onSortNumberClick}>Card ID</button>
-        <button>Rarity</button>
+        <button onClick={onSortRarityClick}>Rarity</button>
         <button onClick={onSortNameClick}>Name</button>
         </div>
 {view?(
