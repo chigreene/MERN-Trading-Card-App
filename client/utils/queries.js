@@ -146,5 +146,18 @@ query Query($logged: String!, $username: String) {
   }
 }
 `
+
+export const QUERY_CARDS=gql`
+query Query {
+  cards {
+    _id
+    card_id
+    name
+    rarity
+    description
+  }
+}
+
+`
 ;
 
