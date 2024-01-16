@@ -36,8 +36,10 @@ const typeDefs = `
     cards: [Card]
     card(card_id: ID!): Card
     cardPack: [Card]
+    rareCardPack: [Card]
     me: User
     trades: [Trade]
+    compareCards(username:String,logged:String!):[Card]
   }
 
   type Mutation{
@@ -51,11 +53,11 @@ const typeDefs = `
     createTrade(
       trader: String!
       recipient: String!
-      offeredCard: [ID]!
+      offeredCard: [ID]
       requestedCard: [ID]!
     ): Trade
-
       changeTradeStatus(_id:ID!,status:String!):Trade
+       editTrade(_id: ID!, request: [ID], offer: [ID]!): Trade
   }
 `;
 

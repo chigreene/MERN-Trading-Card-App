@@ -44,19 +44,20 @@ function TradePage() {
   console.log("BOB123", formState.recipient);
 
   return (
-    <>
+    <div className="parentContainer">
       {Auth.loggedIn() ? (
         <>
           <h1>Trade Page</h1>
 
           <form onSubmit={handleFormSubmit}>
+            <label htmlFor="trader">Trader:</label>
             <input
               name="trader"
               value={formState.trader}
               type="text"
               placeholder="Trader"
             />
-            {/* <label htmlFor="recipient">Recipient:</label> */}
+            <label htmlFor="recipient">Recipient:</label>
             <select
               id="recipient"
               name="recipient"
@@ -76,7 +77,7 @@ function TradePage() {
                   ))
               )}
             </select>
-            {/* <label htmlFor="offeredCard">Offered Card:</label> */}
+            <label htmlFor="offeredCard">Offered Card:</label>
             <select
               id="offeredCard"
               name="offeredCard"
@@ -96,7 +97,7 @@ function TradePage() {
                   ))
               )}
             </select>
-            {/* <label htmlFor="requestedCard">Requested Card:</label> */}
+            <label htmlFor="requestedCard">Requested Card:</label>
             <select
               id="requestedCard"
               name="requestedCard"
@@ -124,7 +125,7 @@ function TradePage() {
       ) : (
         <h1>Must Be Logged In</h1>
       )}
-    </>
+    </div>
   );
 }
 

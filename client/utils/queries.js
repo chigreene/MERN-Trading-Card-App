@@ -124,4 +124,40 @@ export const QUERY_PACK = gql`
   }
 `;
 
-// export const QUERY_TRADES = gql``;
+export const QUERY_RAREPACK = gql`
+  query RareCardPack {
+    rareCardPack {
+      _id
+      card_id
+      name
+      rarity
+      description
+    }
+  }
+`
+export const COMPARE_CARDS= gql`
+query Query($logged: String!, $username: String) {
+  compareCards(logged: $logged, username: $username) {
+    _id
+    card_id
+    name
+    rarity
+    description
+  }
+}
+`
+
+export const QUERY_CARDS=gql`
+query Query {
+  cards {
+    _id
+    card_id
+    name
+    rarity
+    description
+  }
+}
+
+`
+;
+
