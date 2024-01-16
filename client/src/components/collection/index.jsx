@@ -94,6 +94,9 @@ const onSortRarityClick = () => {
 const onSortNotOwnedClick=()=>{
 setCards(compare)
 setNot(!sortNot)
+setSortName(null);
+setSortNumber(null);
+setSortRarity(null)
 }
   // change view from tabel to a sort of book view
   const onViewClick=()=>{
