@@ -46,6 +46,7 @@ const Trades = () => {
 
   return (
     <div className="tradeContainer">
+      <div className="partial-line"></div>
       <h2>User Trades</h2>
       {userTrades.map((trade) => (
         <div key={trade._id} className="trade-item">
@@ -93,7 +94,7 @@ const Trades = () => {
           </div>
           <div>
             <strong>Requested Cards:</strong>
-            <SavedCards savedCards={trade.requestedCard} compare={[]}  />
+            <SavedCards savedCards={trade.requestedCard} compare={[]} />
           </div>
         </div>
       ))}

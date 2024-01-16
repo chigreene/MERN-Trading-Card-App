@@ -16,7 +16,7 @@ function TradePage() {
     offeredCard: "",
     requestedCard: "",
   });
-  
+
   const { loading, data } = useQuery(QUERY_USERS);
   console.log("Loading state: ", loading);
   console.log("Data object: ", data);
@@ -39,12 +39,12 @@ function TradePage() {
     window.location.reload();
   };
 
- 
+  // console.log("BOB123", data.users);
 
   console.log("BOB123", formState.recipient);
 
   return (
-    <>
+    <div className="parentContainer">
       {Auth.loggedIn() ? (
         <>
           <h1>Trade Page</h1>
@@ -76,7 +76,7 @@ function TradePage() {
                   ))
               )}
             </select>
-            <label htmlFor="offeredCard">Offered Card:</label>
+            {/* <label htmlFor="offeredCard">Offered Card:</label> */}
             <select
               id="offeredCard"
               name="offeredCard"
@@ -95,9 +95,8 @@ function TradePage() {
                     </option>
                   ))
               )}
-              
             </select>
-            <label htmlFor="requestedCard">Requested Card:</label>
+            {/* <label htmlFor="requestedCard">Requested Card:</label> */}
             <select
               id="requestedCard"
               name="requestedCard"
@@ -125,7 +124,7 @@ function TradePage() {
       ) : (
         <h1>Must Be Logged In</h1>
       )}
-    </>
+    </div>
   );
 }
 

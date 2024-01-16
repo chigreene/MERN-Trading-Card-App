@@ -11,6 +11,7 @@ import Footer from "./components/footer";
 const httpLink = createHttpLink({
   uri: "graphql",
 });
+import "./App.css";
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
@@ -30,9 +31,13 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Nav></Nav>
-      <Outlet />
-      <Footer></Footer>
+      <div className="appContainer">
+        <Nav></Nav>
+        <div className="mainContent">
+          <Outlet />
+        </div>
+        <Footer></Footer>
+      </div>
     </ApolloProvider>
   );
 }
