@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const reactionSchema = require('./Notification')
 
 const inboxSchema = new Schema(
     {
