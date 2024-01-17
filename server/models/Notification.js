@@ -6,6 +6,10 @@ const notificationSchema = new Schema(
             type:Schema.Types.ObjectId,
             default: ()=> new Types.ObjectId()
         },
+        textBody: {
+            type: String,
+            required: true
+        },
         type: {
             type: String,
             required: true
@@ -33,4 +37,4 @@ const notificationSchema = new Schema(
     }
 );
 
-module.exports = reactionSchema;
+module.exports = notificationSchema;
