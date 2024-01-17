@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const itemSchema = require('./Item.js')
 
 const inventorySchema = new Schema(
     {
@@ -6,7 +7,7 @@ const inventorySchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "user"
         },
-        items: [items]
+        items: [itemSchema]
     },
     {
         toJSON: {
