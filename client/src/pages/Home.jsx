@@ -134,7 +134,7 @@ const Home = () => {
           <div className="about">
             <h2>About</h2>
             <p>
-              Welcome to out trading card game. Our website allows you to
+              Welcome to our trading card game. Our website allows you to
               collect and trade unique cards with other users on the platform.
               The first step is to create an account. Once you have created the
               account you will be able to open packs of cards and decide if you
